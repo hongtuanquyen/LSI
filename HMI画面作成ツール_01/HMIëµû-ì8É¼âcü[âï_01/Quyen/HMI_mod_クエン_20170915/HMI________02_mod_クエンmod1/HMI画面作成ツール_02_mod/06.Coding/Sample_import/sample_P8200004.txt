@@ -1,0 +1,993 @@
+Type_display
+ID_No:	1
+Height:	480
+Width:	640
+
+
+Type_button
+ID_No:	101
+Position:	4
+Height:	65
+Width:	115
+X_axis:	0
+Y_axis:	0
+Size_text:	16
+Text_jpn:	"OK"
+Text_eng:	"OK"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	102
+Position:	5
+Height:	65
+Width:	115
+X_axis:	524
+Y_axis:	0
+Size_text:	16
+Text_jpn:	"CANCEL"
+Text_eng:	"CANCEL"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	103
+Position:	12
+Height:	37
+Width:	90
+X_axis:	165
+Y_axis:	280
+Size_text:	18
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	104
+Position:	13
+Height:	37
+Width:	90
+X_axis:	165
+Y_axis:	240
+Size_text:	18
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	106
+Position:	14
+Height:	37
+Width:	90
+X_axis:	165
+Y_axis:	360
+Size_text:	18
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	107
+Position:	15
+Height:	37
+Width:	90
+X_axis:	165
+Y_axis:	320
+Size_text:	18
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	108
+Position:	16
+Height:	37
+Width:	90
+X_axis:	165
+Y_axis:	400
+Size_text:	18
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	110
+Position:	17
+Height:	37
+Width:	90
+X_axis:	255
+Y_axis:	240
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M1"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	111
+Position:	18
+Height:	37
+Width:	90
+X_axis:	255
+Y_axis:	280
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M1"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	112
+Position:	19
+Height:	37
+Width:	90
+X_axis:	255
+Y_axis:	320
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M1"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	113
+Position:	20
+Height:	37
+Width:	90
+X_axis:	255
+Y_axis:	360
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M1"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	114
+Position:	21
+Height:	37
+Width:	90
+X_axis:	255
+Y_axis:	400
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M1"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	116
+Position:	22
+Height:	37
+Width:	90
+X_axis:	345
+Y_axis:	240
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M2"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	117
+Position:	23
+Height:	37
+Width:	90
+X_axis:	345
+Y_axis:	280
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M2"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	118
+Position:	24
+Height:	37
+Width:	90
+X_axis:	345
+Y_axis:	400
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M2"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	119
+Position:	25
+Height:	37
+Width:	90
+X_axis:	345
+Y_axis:	360
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M2"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	120
+Position:	26
+Height:	37
+Width:	90
+X_axis:	345
+Y_axis:	320
+Size_text:	16
+Text_jpn:	"ボタン"
+Text_eng:	"M2"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	122
+Position:	27
+Height:	37
+Width:	90
+X_axis:	449
+Y_axis:	240
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PRESS"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	123
+Position:	28
+Height:	37
+Width:	90
+X_axis:	449
+Y_axis:	280
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PRESS"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	124
+Position:	29
+Height:	37
+Width:	90
+X_axis:	449
+Y_axis:	320
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PRESS"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	125
+Position:	30
+Height:	37
+Width:	90
+X_axis:	449
+Y_axis:	360
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PRESS"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	126
+Position:	31
+Height:	37
+Width:	90
+X_axis:	449
+Y_axis:	400
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PRESS"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	128
+Position:	32
+Height:	37
+Width:	90
+X_axis:	540
+Y_axis:	240
+Size_text:	15
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	129
+Position:	33
+Height:	37
+Width:	90
+X_axis:	540
+Y_axis:	280
+Size_text:	15
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	130
+Position:	34
+Height:	37
+Width:	90
+X_axis:	540
+Y_axis:	320
+Size_text:	15
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	131
+Position:	35
+Height:	37
+Width:	90
+X_axis:	540
+Y_axis:	360
+Size_text:	15
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	132
+Position:	36
+Height:	37
+Width:	90
+X_axis:	540
+Y_axis:	400
+Size_text:	15
+Text_jpn:	"ボタン"
+Text_eng:	"STOP"
+Is_toggle:	1
+Image_on:	"Image\09_off.bmp"
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\01_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	133
+Position:	39
+Height:	57
+Width:	80
+X_axis:	131
+Y_axis:	6
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\btn_base_on.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	134
+Position:	40
+Height:	57
+Width:	78
+X_axis:	435
+Y_axis:	6
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\btn_wave_off.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	135
+Position:	41
+Height:	80
+Width:	120
+X_axis:	19
+Y_axis:	89
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PAGE DOWN"
+Is_toggle:	0
+Image_off:	"Image\03_off.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	136
+Position:	42
+Height:	80
+Width:	120
+X_axis:	501
+Y_axis:	89
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"PAGE UP"
+Is_toggle:	0
+Image_off:	"Image\03_off.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_text
+ID_No:	201
+Position:	1
+Height:	479
+Width:	639
+X_axis:	0
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		128
+Back_color_G:		0
+Back_color_B:		255
+
+
+Type_text
+ID_No:	202
+Position:	2
+Height:	400
+Width:	620
+X_axis:	10
+Y_axis:	70
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	203
+Position:	3
+Height:	110
+Width:	350
+X_axis:	145
+Y_axis:	75
+Size_text:	12
+Text_jpn:	""
+Text_eng:	"STOP   : CYCLE STOP ONLY\r\nM1        : MODE1 SET-POS\r\nM2        : MODE2 STAT2=0\r\nPRESS: PRESS OFF\r\nPUMP  : PUMP OFF"
+Is_label:	0
+Align_text:	"TopLeft"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	204
+Position:	6
+Height:	22
+Width:	90
+X_axis:	53
+Y_axis:	213
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"LIMITTER"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	205
+Position:	7
+Height:	24
+Width:	143
+X_axis:	27
+Y_axis:	250
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"FP1 OVER"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	210
+Position:	8
+Height:	24
+Width:	143
+X_axis:	27
+Y_axis:	290
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"FP1 UNDER"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	211
+Position:	9
+Height:	24
+Width:	143
+X_axis:	29
+Y_axis:	331
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"FP2 OVER"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	212
+Position:	10
+Height:	24
+Width:	143
+X_axis:	27
+Y_axis:	370
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"FP2 UNDER"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	213
+Position:	11
+Height:	24
+Width:	143
+X_axis:	27
+Y_axis:	410
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"COUNT UP"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	214
+Position:	37
+Height:	71
+Width:	391
+X_axis:	123
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		0
+
+
+Type_text
+ID_No:	215
+Position:	38
+Height:	61
+Width:	222
+X_axis:	212
+Y_axis:	4
+Size_text:	18
+Text_jpn:	"＜停止機能選択＞"
+Text_eng:	"＜停止機能選択＞"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+-----------------------------------------------------------------
+Type_display
+ID_No:	2
+Height:	640
+Width:	800
+-----------------------------------------------------------------

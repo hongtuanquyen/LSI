@@ -1,0 +1,654 @@
+Language:	English
+Type_display
+ID_No:	1
+Height:	380
+Width:	640
+
+
+Type_button
+ID_No:	1
+Position:	3
+Height:	251
+Width:	198
+X_axis:	16
+Y_axis:	66
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H1.png"
+Image_press:"Image\HMI_B3_H1.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	2
+Position:	9
+Height:	40
+Width:	55
+X_axis:	360
+Y_axis:	60
+Size_text:	18
+Text_jpn:	"<"
+Text_eng:	"<"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	3
+Position:	10
+Height:	40
+Width:	55
+X_axis:	360
+Y_axis:	115
+Size_text:	18
+Text_jpn:	"<"
+Text_eng:	"<"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	4
+Position:	11
+Height:	40
+Width:	55
+X_axis:	360
+Y_axis:	280
+Size_text:	18
+Text_jpn:	"<"
+Text_eng:	"<"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	5
+Position:	12
+Height:	40
+Width:	55
+X_axis:	360
+Y_axis:	225
+Size_text:	18
+Text_jpn:	"<"
+Text_eng:	"<"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	6
+Position:	13
+Height:	40
+Width:	55
+X_axis:	360
+Y_axis:	170
+Size_text:	18
+Text_jpn:	"<"
+Text_eng:	"<"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	7
+Position:	14
+Height:	40
+Width:	55
+X_axis:	550
+Y_axis:	60
+Size_text:	18
+Text_jpn:	">"
+Text_eng:	">"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	8
+Position:	15
+Height:	40
+Width:	55
+X_axis:	550
+Y_axis:	115
+Size_text:	18
+Text_jpn:	">"
+Text_eng:	">"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	9
+Position:	16
+Height:	40
+Width:	55
+X_axis:	550
+Y_axis:	170
+Size_text:	18
+Text_jpn:	">"
+Text_eng:	">"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	10
+Position:	17
+Height:	40
+Width:	55
+X_axis:	548
+Y_axis:	224
+Size_text:	18
+Text_jpn:	">"
+Text_eng:	">"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	11
+Position:	18
+Height:	40
+Width:	55
+X_axis:	550
+Y_axis:	280
+Size_text:	18
+Text_jpn:	">"
+Text_eng:	">"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	12
+Position:	19
+Height:	40
+Width:	75
+X_axis:	547
+Y_axis:	5
+Size_text:	18
+Text_jpn:	"戻る"
+Text_eng:	"戻る"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	13
+Position:	20
+Height:	40
+Width:	150
+X_axis:	379
+Y_axis:	5
+Size_text:	18
+Text_jpn:	"説明"
+Text_eng:	"説明"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H2.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	14
+Position:	21
+Height:	40
+Width:	110
+X_axis:	425
+Y_axis:	60
+Size_text:	14
+Text_jpn:	"+2db"
+Text_eng:	"+2dB"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	15
+Position:	22
+Height:	40
+Width:	110
+X_axis:	425
+Y_axis:	115
+Size_text:	18
+Text_jpn:	"+2dB"
+Text_eng:	"+2dB"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	16
+Position:	23
+Height:	40
+Width:	110
+X_axis:	425
+Y_axis:	170
+Size_text:	18
+Text_jpn:	"-1dB"
+Text_eng:	"-1dB"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	17
+Position:	24
+Height:	40
+Width:	110
+X_axis:	425
+Y_axis:	225
+Size_text:	18
+Text_jpn:	"-1dB"
+Text_eng:	"-1dB"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	18
+Position:	25
+Height:	40
+Width:	110
+X_axis:	425
+Y_axis:	280
+Size_text:	18
+Text_jpn:	"0dB"
+Text_eng:	"0dB"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	19
+Position:	26
+Height:	39
+Width:	121
+X_axis:	492
+Y_axis:	336
+Size_text:	12
+Text_jpn:	"売了"
+Text_eng:	"売了"
+Is_toggle:	0
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	20
+Position:	27
+Height:	36
+Width:	43
+X_axis:	481
+Y_axis:	7
+Size_text:	7
+Text_jpn:	"ビュー"
+Text_eng:	"ビュー"
+Is_toggle:	0
+Image_off:	"Image\HMI_B3_H3.png"
+Image_press:"Image\HMI_B3_H3.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_text
+ID_No:	1
+Position:	1
+Height:	380
+Width:	640
+X_axis:	0
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		128
+Back_color_G:		128
+Back_color_B:		128
+
+
+Type_text
+ID_No:	2
+Position:	2
+Height:	280
+Width:	620
+X_axis:	0
+Y_axis:	50
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	3
+Position:	4
+Height:	40
+Width:	105
+X_axis:	240
+Y_axis:	65
+Size_text:	18
+Text_jpn:	"フロント L"
+Text_eng:	"フロント L"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	4
+Position:	5
+Height:	40
+Width:	105
+X_axis:	240
+Y_axis:	120
+Size_text:	18
+Text_jpn:	"フロント R"
+Text_eng:	"フロント R"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	5
+Position:	6
+Height:	40
+Width:	105
+X_axis:	240
+Y_axis:	175
+Size_text:	18
+Text_jpn:	"リヤ R"
+Text_eng:	"リヤ R"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	6
+Position:	7
+Height:	40
+Width:	105
+X_axis:	240
+Y_axis:	230
+Size_text:	18
+Text_jpn:	"リヤ L"
+Text_eng:	"リヤ L"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	7
+Position:	8
+Height:	40
+Width:	131
+X_axis:	221
+Y_axis:	285
+Size_text:	18
+Text_jpn:	"サブウーファー"
+Text_eng:	"サブウーファー"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	8
+Position:	28
+Height:	30
+Width:	30
+X_axis:	20
+Y_axis:	10
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	9
+Position:	29
+Height:	35
+Width:	250
+X_axis:	60
+Y_axis:	10
+Size_text:	22
+Text_jpn:	"スピーカー出カレベル"
+Text_eng:	"スピーカー出カレベル"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		128
+Back_color_G:		128
+Back_color_B:		128
+-----------------------------------------------------------------

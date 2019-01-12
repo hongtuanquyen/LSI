@@ -1,0 +1,799 @@
+/******************************************************************************
+   ƒNƒ‰ƒŠƒIƒ““aŒü‚¯
+   ƒvƒƒWƒFƒNƒg–¼   : 2012”NAMFM_RADIOƒ‚ƒfƒ‹
+   ƒtƒ@ƒCƒ‹–¼      : key_main.c
+   ‹@   ”\         : ƒL[“ü—ÍƒƒCƒ“ˆ—
+                 ƒL[ƒ‚ƒWƒ…[ƒ‹ƒ[ƒJƒ‹ƒTƒuŠÖ”
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+#define   _KEY_MAIN_C_
+
+#include   "string.h"
+
+#include   "../comm/common.h"
+#include   "key_def.h"
+#include   "key_func_ext.h"
+#include   "key_sys.h"
+#include   "key_main.h"
+
+#include   "../io/IO_inc.h"
+#include   "../main/ma_ext.h"
+#include   "../power/pw_func_ext.h"
+#include   "../tuner/tu_key.h"
+#include   "../aux1/aux_key.h"
+#include   "../off/off_key.h"
+#include   "../disp/lcd_ext.h"
+#include   "../submode/sbm_ext.h"
+#include   "../submode/sbm_def.h"
+#include   "../testmode/TEST_inc.h"
+
+/*   ----------------------------------------*/
+/*   ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾iƒ[ƒJƒ‹ŠÖ”j   */
+/*   ----------------------------------------*/
+
+/*   ‚k‚b‚cƒL[‚Ì“ü—Í”»’èˆ—            */
+static   void   Key_lcd_keyin_check(void);
+
+/*   ‚`‚k‚`‚q‚lƒL[‚Ì“ü—Í”»’èˆ—            */
+static   void   Key_alarmkey_check(void);
+
+/*   “ü—ÍƒL[ƒR[ƒh‚ÌŠm’è‚ğs‚¤B         */
+static   void   Key_CodeCheck_func(void);
+
+/*   “ü—ÍƒL[‚É‘Î‰‚µ‚½ˆ—‚Ì‹N“®‚ğs‚¤B   */
+static   void   Key_code_process(void);
+
+/*   LCD Key‚Ì‰Ÿ‚³‚ê‚Ä‚¢‚éƒL[ƒR[ƒh‚ğƒ`ƒFƒbƒN‚·‚éB*/
+static   BYTE   Key_lcd_key_data_check(void);
+
+/*   “ü—ÍƒL[‚É‘Î‚·‚é“®ìˆ—‚ğ‹N“®‚·‚éB   */
+static   BYTE    Key_code_sub_func(void);
+
+/*   Key Data óMˆ—                  */
+static   BYTE   Key_DataRecive( void );
+
+static void Key_status_check(void);
+static BYTE   Key_parameter_get(void);
+
+#if (CKEY_TEST_KEY == YES)
+static BYTE   Key_code_search(BYTE , BYTE   *);
+#endif
+static void Key_test_key_chk(void);
+
+static void   key_mem_keyjet(BYTE keyjet);
+
+/******************************************************************************
+   ŠÖ”–¼      FKey_main
+   ˆø”      F–³‚µ
+   –ß‚è’l      F–³‚µ
+   ‹@”\ŠT—ª   FKeyƒ‚ƒWƒ…[ƒ‹EƒƒCƒ“ˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+void   Key_main(void)
+{
+   Key_lcd_keyin_check();         /*   LCD Key“ü—Íƒ`ƒFƒbƒNˆ—   Check xem co yeu cau tu LCD driver ko. Neu co, check xem key data nhan duoc gom nhung key gi      */
+   Key_alarmkey_check();          /*   Luu y key ALARM la key rieng. Check xem che do ALARM co bi error, neu ko thi check xem key co duoc nhan chua.
+                                       check fkey_alarm_key.*/
+   Key_test_key_chk();            /*   ????    ko hieu */
+   Key_CodeCheck_func();         /*   Key Šm’èˆ—               Kiem tra xem co phai 2 key tro len dc nhan hay ko(CKEY_ID_MULTIPLEX). 
+                                                               Neu dung, ko nhan tat ca key(key_new_key = CKEY_ID_KEY_OFF)*/
+   Key_status_check();            /*  Keyó‘Ôƒ`ƒFƒbƒNˆ—       Key state check processing        */
+   Key_code_process();            /*  Key•ªŠòˆ—                  */
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_initial
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   F–³‚µ
+   ‹@  ”\   FKeyƒ‚ƒWƒ…[ƒ‹•Ï”‰Šú‰»ˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+void   Key_initial(void)
+{
+   /*   LCDƒL[ƒNƒŠƒA */
+   key_lcd_input = CKEY_ID_KEY_OFF;   /* LCD Key Code Memory area   CKEY_ID_KEY_OFF = 0*/
+   key_lcd_input_Timer = CKEY_TIME_UP; /* CKEY_TIME_UP */
+
+   /* ƒL[ó‘Ôƒ`ƒFƒbƒN—p•Ï”ƒNƒŠƒA   Key status check variable clear */
+   key_old_key = 0;   /* ‘O‰ñŠm’è Key Code */
+   key_new_key = 0;   /* ¡‰ñŠm’è Key Code */
+   key_now_key = 0;
+   key_long_timer = 0xff;   /* Long Key Šm’è—pƒ^ƒCƒ}ƒJƒEƒ“ƒ^     Long key confirmation timer counter*/
+   
+   key_before_key = 0;
+   key_test_code = 0;
+   key_test_sta = CKEY_TSET_NOP;  // CKEY_TSET_NOP = 0
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_lcd_keyin_check
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKeyƒR[ƒh
+   ‹@  ”\   FLCD“ü—Íˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   void   Key_lcd_keyin_check(void)
+{
+   if (key_lcd_input_Timer == CKEY_TIME_UP)   // CKEY_TIME_UP = 0
+   {
+      key_lcd_input_Timer = CKEY_IN_TIME50ms;
+      
+      if(MIO_IN_pLCDDI() == LOW)   /*   LCD Key on ?  MIO_IN_pLCDDI() trong file IO_ext.h, Kiem tra truc tiep Port 1 pin 0, xem file LC75857E tr18
+                                        Neu la LOW tuc la nhan duoc yeu cau gui key data tu LCD driver*/
+      {
+         if(Key_DataRecive() !=NG )  // Neu viec nhan ko gap error, nhan du 30bit key data
+         {
+            key_lcd_input = Key_lcd_key_data_check(); //key_lcd_input = CKEY_ID_KEY_OFF(ko co key duoc nhan) hoac input_code[ 0 ](chi co 1 key duoc nhan)
+                                                      //                 hoac CKEY_ID_MULTIPLEX(nhieu key duoc nhan)
+                                                      //                 hoac CKEY_ID_LCD_TEST1 / TEST2/ TEST3 
+         }
+         if (key_test_sta == CKEY_TSET_INPUT)
+         {
+            key_test_sta = CKEY_TSET_REPLY;
+            memcpy(key_t_data,key_lcd_driver_data,sizeof(key_t_data)); 
+         }
+      }
+      else  // chua có yeu cau gui key data tu LCD driver
+      {
+         key_lcd_input = CKEY_ID_KEY_OFF;
+         if (key_test_sta == CKEY_TSET_INPUT)
+         {
+            key_test_sta = CKEY_TSET_REPLY;
+            memset(key_t_data,0x00,sizeof(key_t_data));
+         }
+      }
+   }
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_alarmkey_check
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKey ƒR[ƒh
+   ‹@  ”\   FAlarmKey“Ç‚İ‚İˆ—
+------------------------------------------------------------------------------
+[chin20120817]   V‹Kì¬
+******************************************************************************/
+void   Key_alarmkey_check(void)
+{
+   if (Ma_model_dest()== CMA_MODEL_AM_J)
+   {
+      fkey_alarm_key = CKEY_ID_KEY_OFF;
+   }
+   else
+   {
+      fkey_alarm_key = Pw_ret_almkey();
+   }
+}
+/******************************************************************************
+   ŠÖ”–¼   FKey_CodeCheck_func
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKey ƒR[ƒh
+   ‹@  ”\   F“ü—ÍƒL[ƒR[ƒh‚ÌŠm’èˆ—
+   ƒRƒƒ“ƒgFLCDƒL[ƒR[ƒhî•ñ‚ğŠî‚ÉƒL[Šm’è‚ğs‚¤B
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   void   Key_CodeCheck_func(void)
+{
+   BYTE   iKeyCnt;
+   BYTE   iKeyCode;
+   
+   if (key_in_disable_timer != CKEY_TIME_UP ) // CKEY_TIME_UP = 0,  duoc gan moi trong key_check_stop(), va ham key_check_stop() duoc goi trong Pw_power_key()
+   {
+      fkey_alldis = ON;      // all key disabled
+      fkey_nop = ON;
+   }
+   fkey_prio_key = ON;
+   if (key_lcd_input == CKEY_ID_LCD_PWR)
+   {
+      key_new_key = key_lcd_input;
+   }
+   else
+   {
+      fkey_prio_key = OFF;
+      fkey_alldis = OFF;
+      iKeyCnt = 0;
+      iKeyCode = CKEY_ID_KEY_OFF;
+      
+      if (fkey_alarm_key == ON)
+      {
+         iKeyCode = CKEY_ID_LCD_ALARM;
+         iKeyCnt++;
+      }
+      if (key_lcd_input != CKEY_ID_KEY_OFF)
+      {
+         iKeyCode = key_lcd_input;
+         iKeyCnt++;
+      }
+      if ((iKeyCnt > 1) || (iKeyCode == CKEY_ID_MULTIPLEX))
+      {
+         key_new_key = CKEY_ID_KEY_OFF;
+         fkey_nop = ON;                  /* ‘½dƒL[‰Ÿ‚³‚ê‚½ */
+      }
+      else if (iKeyCnt == 1)               /* ˆê‚ÂƒL[ */
+      {
+         key_new_key = iKeyCode;            /* ƒL[Šm’è */
+      }
+      else                           /* ƒL[‰Ÿ‚³‚ê‚Ä‚È‚¢ */
+      {
+         key_new_key = CKEY_ID_KEY_OFF;      /* key off Šm’è */
+         fkey_nop = OFF;
+      }
+   }
+   
+   if ( fkey_alldis == ON )                  /* ALL Key‹Ö~’†    ALL Key In Prohibited */
+   {
+      key_new_key = CKEY_ID_KEY_OFF;            /* ƒL[OFF‚Æ‚·‚é     Set key to OFF*/
+   }
+   else if ((fkey_nop == ON) && (fkey_prio_key == OFF))
+   {
+      key_new_key = CKEY_ID_KEY_OFF;            /* ƒL[OFF‚Æ‚·‚é     Set key to OFF*/
+   }
+   else
+   {
+      ;
+   }
+}
+/******************************************************************************
+   ŠÖ”–¼   FKey_lcd_key_data_check
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKeyƒR[ƒh
+   ‹@  ”\   FLCD“ü—Íƒf[ƒ^ƒ`ƒFƒbƒNˆ—B
+   ƒRƒƒ“ƒgFLCDƒL[‚Ì‰Ÿ‚³‚ê‚Ä‚¢‚éƒL[ƒR[ƒh‚ğƒ`ƒFƒbƒN‚·‚éB
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   BYTE   Key_lcd_key_data_check(void)
+{
+   BYTE   key_code_cnt;         /*   Key Driver Data Total ƒJƒEƒ“ƒ^    Key Driver Data Total Counter   */
+   BYTE   return_cd;            /*   –ß‚è’lŠi”[•Ï”   Bien so chua gia tri tra ve */
+   BYTE   key_driver_data;      /*   Key Driver Data Byte  ƒCƒ“ƒfƒbƒNƒX   Key Driver Data Byte index*/
+   BYTE   key_d_bit_cnt;        /*  Key Driver Data Bit ƒCƒ“ƒfƒbƒNƒX   Key Driver Data Bit index*/
+   BYTE   loop_cnt1;            /*   Loop ƒJƒEƒ“ƒ^         Loop Counter         */
+   BYTE   loop_cnt2;            /*   Loop ƒJƒEƒ“ƒ^         Loop Counter         */
+   BYTE   input_code[3];         /*  Test‚Ì3‚Â‘½dƒL[‘Î‰‚Ì‚½‚ßAƒoƒbƒtƒ@Šg’£ De ma dap ung duoc nhieu key cua Test, mo rong buffer*/
+   BYTE   dest;
+   
+   dest = Ma_model_dest();
+   input_code [0] = CKEY_ID_KEY_OFF;   /*   Key code Save aria  CKEY_ID_KEY_OFF = 0  */
+   input_code [1] = CKEY_ID_KEY_OFF;   /*   Key code Save aria   */
+   input_code [2] = CKEY_ID_KEY_OFF;   /*   Key code Save aria   */
+   
+   key_code_cnt = 0;
+   key_d_bit_cnt = 0;
+   key_lcd_driver_data[3] &= 0x03f; // 0x03f = 0x3f = 00111111, ro rang byte thu 4 bo 2 bit cuoi. nen nho la gui data theo LSB. Xem tkey_code_tbl[] trong key_main.h
+  
+   /*   Chuc nang vong lap for loop_cnt1: quet 4 byte(32bit) duoc gui tu LCD qua VDK
+        Chuc nang vong lap for loop_cnt2: quet tung bit cua 1 byte
+          Neu bit do & 0x01 = 0x01, tuc bit giu chuc nang cua 1 key nao do (Xem tkey_code_tbl[] hoac tkey_am_code_tbl[])
+          Sau do no se dua vao mang input_code. Tong so bit key bit la 3
+   */
+   for (loop_cnt1 = 0;loop_cnt1 < CKEY_LCD_DATA_BYTE;loop_cnt1++) // CKEY_LCD_DATA_BYTE = 4;
+   {
+      key_driver_data = key_lcd_driver_data[loop_cnt1];
+      for (loop_cnt2 = 0;loop_cnt2 < 8;loop_cnt2++)
+      {
+         if ((key_driver_data & 0x01) == 0x01)
+         {
+            key_code_cnt++;
+            if (key_code_cnt > 3)   /* 3Key Ë 4KeyˆÈã‚È‚ç Key–³Œø‚É•ÏX */
+            {
+               break;
+            }
+            if (dest == CMA_MODEL_AM_J)  // chi co AM
+            {
+               input_code[ key_code_cnt-1 ] = tkey_am_code_tbl[key_d_bit_cnt]; // tkey_am_code_tbl trong file key_main.h
+            }
+            else
+            {
+               input_code[ key_code_cnt-1 ] = tkey_code_tbl[key_d_bit_cnt];
+            }
+         }
+         key_driver_data = (key_driver_data >> 1);
+         key_d_bit_cnt++;
+      }
+   }
+
+   if (key_code_cnt == 0 )
+   {
+      return_cd = CKEY_ID_KEY_OFF; 
+   }
+   else if (key_code_cnt == 1 )
+   {
+      return_cd = input_code[ 0 ];
+   }
+   #if (CKEY_TEST_KEY == YES) // CKEY_TEST_KEY = 1, trong file key_def.h
+   else if (key_code_cnt == 2 )
+   {
+      if (Key_code_search(CKEY_ID_LCD_PWR, input_code) == TRUE)
+      {
+         key_before_key = CKEY_ID_KEY_OFF;
+         return_cd = CKEY_ID_LCD_PWR;
+      }
+      else
+      {
+         return_cd = Key_code_search(CKEY_ID_LCD_CH, input_code);
+         if (return_cd == TRUE)
+         {
+            if (Key_code_search(CKEY_ID_LCD_RIGHT, input_code) == TRUE)
+            {
+               key_before_key = CKEY_ID_LCD_TEST1;
+               return_cd = key_before_key;
+            }
+            else if (Key_code_search(CKEY_ID_LCD_LEFT, input_code) == TRUE)
+            {
+               key_before_key = CKEY_ID_LCD_TEST2;
+               return_cd = key_before_key;
+            }
+            else if (Key_code_search(CKEY_ID_LCD_VOLUP, input_code) == TRUE)
+            {
+               key_before_key = CKEY_ID_LCD_TEST3;
+               return_cd = key_before_key;
+            }
+            else
+            {
+               return_cd = CKEY_ID_MULTIPLEX;
+               fkey_nop = ON;
+               key_before_key = CKEY_ID_KEY_OFF;
+            }
+         }
+         else
+         {
+            return_cd = CKEY_ID_MULTIPLEX;
+            fkey_nop = ON;
+            key_before_key = CKEY_ID_KEY_OFF;
+         }
+      }
+   }
+   else if (key_code_cnt == 3 )
+   {
+      if (( key_before_key >= CKEY_ID_LCD_TEST1 )&&( key_before_key <= CKEY_ID_LCD_TEST3 ))  
+      {
+         return_cd = Key_code_search(CKEY_ID_LCD_PWR, input_code);
+         if (return_cd == TRUE)
+         {
+            return_cd = key_before_key + 3;         /* ‰B‚µƒL[Šm’è   Confirm hidden key  */
+            fkey_nop = OFF;
+         }
+      }
+      else
+      {
+         key_before_key = CKEY_ID_KEY_OFF;
+         return_cd = CKEY_ID_MULTIPLEX;
+         fkey_nop = ON;
+      }
+   }
+   #endif
+   else
+   {
+      return_cd = CKEY_ID_MULTIPLEX;
+      fkey_nop = ON;
+   }
+   return ( return_cd );
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_code_search
+   ˆø  ”   Fcode Ë ƒT[ƒ`Œ³‚ÌƒL[ƒR[ƒh
+         F*input_key Ë LCDƒL[ƒR[ƒhŠi”[ƒoƒbƒtƒ@æ“ªƒAƒhƒŒƒX
+   –ß‚è’l   FTRUE Ë w’èƒL[ƒR[ƒhALCDƒL[ƒR[ƒhƒoƒbƒtƒ@‚ÉŠi”[‚³‚ê‚Ä‚¢‚é
+         FFALSE Ë w’èƒL[ƒR[ƒhAŠi”[‚³‚ê‚Ä‚¢‚È‚¢
+   ‹@  ”\   Fw’è·°LCDƒL[ƒR[ƒhŠi”[ƒoƒbƒtƒ@‚É‚ ‚é‚©‚Ç‚¤‚©ƒT[ƒ`ˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+#if (CKEY_TEST_KEY == YES)
+static BYTE   Key_code_search(BYTE   code, BYTE   *input_key)
+{
+   BYTE   iCnt;
+   BYTE   iRet;
+
+   iRet = FALSE;
+   for (iCnt = 0; iCnt < 3; iCnt ++)
+   {
+      if ((*input_key) == code)
+      {
+         iRet = TRUE;
+         break;
+      }
+      input_key++;
+   }
+   return(iRet);
+}
+#endif
+/******************************************************************************
+   ŠÖ”–¼   FKey_parameter_get
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FOK Ëƒf[ƒ^æ“¾¬Œ÷
+         FNG Ëƒf[ƒ^æ“¾¸”s
+   ‹@  ”\   FƒL[Šeƒpƒ‰ƒ[ƒ^æ“¾ˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static BYTE   Key_parameter_get(void)
+{
+   BYTE   work;
+   BYTE   rtn_cd;
+
+   key_com_stat = Sbm_current_mode();
+
+   if((Sbm_mode_check() != OFF)&&(Sbm_mode_check() != CSBM_VOL)) // vì la submode nen key_mode_stat se bang gia tri trc do. Neu dang o TUNER ma chinh alarm thì 
+   {                                                             // key_mode_stat se bang cua TUNER.
+      KcodeT_p = (const KEY_CHG_TBL *)Sbm_keyCodeTable_addr_get(); // tuy la submode nao(ALARM, CLOCK,SEF...) thi se anh xa den keytable cua submode do
+      ProceT_p = (const KEY_PROC_TBL *)Sbm_key_func_addr_get();
+      rtn_cd = Key_code_sub_func();   /* ƒTƒuƒ‚[ƒhƒL[ƒT[ƒ`A—LŒøƒL[‚ ‚ê‚ÎOK‚É‚È‚é  Submode key search, OK if it is valid key*/
+      if (rtn_cd == OK)
+      {
+         return(rtn_cd);
+      }
+   }
+
+   if (Pw_Power_status_get() == OFF)
+   {
+      KcodeT_p = (const KEY_CHG_TBL *)Off_keyCodeTable_addr_get();
+      ProceT_p = (const KEY_PROC_TBL *)Off_key_func_addr_get();
+      key_mode_stat = 0x00;
+      rtn_cd = Key_code_sub_func();
+      return(rtn_cd);
+   }
+
+   /* ƒƒCƒ“ƒ‚[ƒhƒT[ƒ` */
+   rtn_cd = OK;
+   work = Ma_current_mode();
+   switch( work )
+   {
+      case   CMA_TUNER:      /*   TUNERƒ‚[ƒh   */
+      case   CMA_ISR:
+         KcodeT_p = (const KEY_CHG_TBL *)Tu_keyCodeTable_addr_get();
+         ProceT_p = (const KEY_PROC_TBL *)Tu_key_func_addr_get();
+         key_mode_stat = Tu_ModeID_get();
+         break;
+      
+      case   CMA_AUX:      /*   AUXƒ‚[ƒh */
+         KcodeT_p = (const KEY_CHG_TBL *)Aux_keyCodeTable_addr_get();
+         ProceT_p = (const KEY_PROC_TBL *)Aux_key_func_addr_get();
+         key_mode_stat = Aux_ModeID_get();  // 0x00
+         break;
+
+      default:
+         KcodeT_p = (const KEY_CHG_TBL *)Aux_keyCodeTable_addr_get();
+         ProceT_p = (const KEY_PROC_TBL *)Aux_key_func_addr_get();
+         key_mode_stat = Aux_ModeID_get();
+         break;
+   }
+
+      rtn_cd = Key_code_sub_func();
+   
+   return(rtn_cd);
+}
+/******************************************************************************
+   ŠÖ”–¼   FKey_status_check
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   F–³‚µ
+   ‹@  ”\   FƒL[ó‘Ô”»’fˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static void Key_status_check(void)
+{
+   BYTE   ext_mute;
+
+   /* ƒL[ó‘Ô”»’fˆ— */
+   key_status = CKEY_KEYNOP;            /* Key •Ï‰»–³‚µ */
+
+   if (key_old_key != key_new_key)   // Truong hop nay = FALSE(key_old_key == key_new_key) khi key duoc nhan giu lau. 
+   {
+      if (key_old_key == CKEY_ID_KEY_OFF)    // truong hop nhan key moi. VD: truoc do nhan key PWR , sau do nhan key CH. 
+                                             // Trong TH nay, key_long_timer se duoc gan moi(1s,2s tuy module)
+      {
+         key_status = CKEY_KEYON;         /* Key On */
+         key_now_key = key_new_key;         /* New Key On */
+         key_old_key = key_new_key;
+      }
+      else     // Truong hop ko nhan tiep key da nhan duoc do. VD: luc dau nhan key PWR, tha ra va ko nhan nua, toi lan key_main() tiep theo no se zo else này
+      {        // VD: Nhan key PWR de tu PWROFF->ON:
+               //   O lan nhan mess CMSG_MAIN dau tien, doan if phia tren se duoc thuc hien
+               //   O lan nhan mess tiep theo(khi nay da release key PWR), doan else se duoc thuc hien, khi nay co fpw_power_key se tu OFF->ON
+         key_status = CKEY_KEYOFF;         /* Key Off */
+         key_now_key = key_old_key;         /* Old Key Off */
+         key_old_key = CKEY_ID_KEY_OFF;      /* Key Old Offİ’è */
+         fkey_prio_key = OFF;            /* —DæƒL[OFF */
+      }
+      key_long_timer = 0xff;               /* key long timer‰Šúİ’è */
+   }
+   else if (key_long_timer == TIMER_OUT)     // Truong hop nhan giu key. 
+                                             // Neu nhan giu key ma ko release, key_long_timer se giam tu tu cho den khi = TIMER_OUT.
+   {
+      key_status = CKEY_KEYLONG;            /* Key ’·‰Ÿ‚µ */
+      key_now_key = key_old_key;            /* Old Key Off.  */
+      key_long_timer = 0xff;
+   }
+   #if 0
+   else if ((key_long_timer != 0xff) &&
+         (fkey_prio_key == FALSE))
+   {
+      /* ŠO•”MUTE’†—DæƒL[ˆÈŠOƒL[OFF‚Æ‚·‚é */
+      ext_mute = Sbm_current_mode();            /* EXT_MUTE ƒ`ƒFƒbƒN */
+      if ((ext_mute & CSBM_EMUTE) == CSBM_EMUTE)
+      {
+         key_status = CKEY_KEYOFF;         /* Key Off */
+         key_now_key = key_old_key;         /* Old Key Off */
+         key_old_key = CKEY_ID_KEY_OFF;      /* Key Old Offİ’è */
+         fkey_nop = ON;                  /* ƒL[–³Œø */
+      }
+   }
+   #endif
+   else
+   {
+      ;
+   }
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_code_process
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKey ƒR[ƒh
+   ‹@  ”\   F“ü—ÍƒL[‚É‘Î‚·‚éƒƒCƒ“ƒ‚[ƒh–ˆ‚Ì“®ìˆ—‚ğ‹N“®‚·‚éB
+   ƒRƒƒ“ƒgFLCDƒL[‰Ÿ‚³‚ê‚Ä‚¢‚éƒL[ƒR[ƒhˆ—ƒe[ƒuƒ‹ƒAƒhƒŒƒX‚ğ
+           æ“¾‚µAˆ—‚ğÀs‚·‚éB
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   void   Key_code_process(void)
+{
+   BYTE   work;
+
+   if (key_status == CKEY_KEYNOP)         /* ƒL[•Ï‰»–³‚µA‚»‚Ì‚Ü‚Ü–ß‚é */
+   {
+      return;
+   }
+
+   work = Key_parameter_get();
+
+   if (work == NG)                  /* ƒpƒ‰ƒ[ƒ^æ“¾‚Å‚«‚È‚¢ */
+   {
+      return;
+   }
+   key_modenb &= key_mode_stat;
+   key_comenb &= key_com_stat;
+
+   if ((key_modenb != key_mode_stat)||  // VD: dang trong mode TUNER SEEK => key_mode_stat = 0x02, neu nhan key VOLUP/VOLDOWN thi key_modenb = 0x01.(Xem file tu_keytbl.h)
+      (key_comenb != key_com_stat))     //     khi này key_modenb = key_modenb & key_mode_stat = 0x00 => thoa dieu kien.
+   {
+      Key_nop();            /* ƒL[–³Œø */
+   }
+   else if ( Key_ProcFunc != 0 )
+   {
+      Key_ProcFunc();      /*   Key off Key“®ìŠÖ”—p   */
+   }
+   else
+   {
+      Key_nop();            /* ƒL[–³Œø */
+   }
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_code_sub_func
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   FKey ƒR[ƒh
+   ‹@  ”\   F“ü—ÍƒL[‚É‘Î‚·‚é“®ìˆ—‚ğ‹N“®‚·‚éB
+   ƒRƒƒ“ƒgFŠm’èƒL[‚Ìƒ‚[ƒh–ˆ‚Ì“à•”ƒR[ƒh‚©‚çˆ—ŠÖ”ƒAƒhƒŒƒXæ“¾‚·‚éB
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   BYTE    Key_code_sub_func(void)
+{
+   BYTE   Key_code;
+   BYTE   cnt;
+
+   Key_code = CKEY_ID_INVALID;
+
+   /* LocalƒL[•ÏŠ· */
+   for ( cnt = 0; cnt < CKEY_BYTE_MAX; cnt++ )
+   {
+      if ( KcodeT_p->com_key_code == CKEY_ID_INVALID )
+      {
+         return(NG);
+      }
+      else if (KcodeT_p->com_key_code == key_now_key)
+      {
+         Key_code = KcodeT_p->local_key_code;
+         break;
+      }
+      else
+      {
+         ;
+      }
+      KcodeT_p++;
+   }
+
+   key_modenb   = 0;
+   key_comenb      = 0;
+   Key_ProcFunc   = 0;
+
+   for (cnt = 0; cnt < CKEY_BYTE_MAX; cnt++)
+   {
+      if (ProceT_p->code == Key_code)
+      {
+         if (key_status == CKEY_KEYON)
+         {
+            key_comenb    = ProceT_p->comenb_on;
+            key_modenb   = ProceT_p->modenb_on;
+            Key_ProcFunc= ProceT_p->key_on;
+         }
+         else if (key_status == CKEY_KEYOFF)
+         {
+            key_comenb    = ProceT_p->comenb_off;
+            key_modenb   = ProceT_p->modenb_off;
+            Key_ProcFunc= ProceT_p->key_off;
+         }
+         else
+         {
+            key_comenb    = ProceT_p->comenb_long;
+            key_modenb   = ProceT_p->modenb_long;
+            Key_ProcFunc= ProceT_p->key_long;
+         }
+         return(OK);
+      }
+      else if ( ProceT_p->code == CKEY_ID_INVALID )
+      {
+         break;
+      }
+      else
+      {
+         ;
+      }
+      ProceT_p++;
+   }
+   return ( NG );
+}
+
+/******************************************************************************
+   ŠÖ”–¼   FKey_DataRecive
+   ˆø  ”   F–³‚µ
+   –ß‚è’l   F–³‚µ
+   ‹@  ”\   FKey Data óMˆ—
+------------------------------------------------------------------------------
+“ú•t      ’S“–Ò      C³“à—e
+2012/07/26   “ŒŠC—Ñ      V‹Kì¬
+******************************************************************************/
+static   BYTE   Key_DataRecive( void )
+{
+   BYTE   mode;
+   memset(&key_lcd_driver_data[0],0x00,sizeof(key_lcd_driver_data));
+   
+   MIO_OUT_pLCDCE( LOW );      /*   LCD CE    "L"   */
+   IO_lcd_ccb( 0x43);      /*   CCBƒAƒhƒŒƒX‘—M   */
+   MIO_OUT_pLCDCE( HIGH );      /*   LCD CE  "H"      */
+   mode = IO_lcd_receive( &key_lcd_driver_data[0] );  // nhan data tu LCD driver va dua vao 4 phan tu(4 byte) cua key_lcd_driver_data[] 
+   MIO_OUT_pLCDCE( LOW );      /*   LCD CE    "L"   */
+   return(mode);
+}
+
+#define      TEST_KEY_POWER      0x0080
+#define      TEST_KEY_AS         0x0040
+#define      TEST_KEY_MODE      0x0020
+#define      TEST_KEY_VUP      0x0010
+#define      TEST_KEY_CH         0x0008
+#define      TEST_KEY_VDW      0x0004
+#define      TEST_KEY_UP         0x0002
+#define      TEST_KEY_DW         0x0001
+#define      TEST_KEY_TISC      0x8000
+#define      TEST_KEY_ALARM      0x4000
+
+void   key_mem_keyjet(BYTE keyjet)
+{
+   switch(keyjet)
+   {
+      case CKEY_ID_LCD_PWR:
+         key_test_code |= TEST_KEY_POWER;
+         break;
+      
+      case CKEY_ID_LCD_AS:
+         key_test_code |= TEST_KEY_AS;
+         break;
+      
+      case CKEY_ID_LCD_SRC:
+         key_test_code |= TEST_KEY_MODE;
+         break;
+      
+      case CKEY_ID_LCD_VOLUP:
+         key_test_code |= TEST_KEY_VUP;
+         break;
+      
+      case CKEY_ID_LCD_CH:
+         key_test_code |= TEST_KEY_CH;
+         break;
+      
+      case CKEY_ID_LCD_VOLDW:
+         key_test_code |= TEST_KEY_VDW;
+         break;
+      
+      case CKEY_ID_LCD_RIGHT:
+         key_test_code |= TEST_KEY_UP;
+         break;
+      
+      case CKEY_ID_LCD_TI_SCAN:
+         key_test_code |= TEST_KEY_TISC;
+         break;
+      
+      case CKEY_ID_LCD_LEFT:
+         key_test_code |= TEST_KEY_DW;
+         break;
+      
+      case CKEY_ID_LCD_ALARM:
+         key_test_code |= TEST_KEY_ALARM;
+         break;
+      
+      default :
+         break;
+   }
+}
+
+void   Key_test_key_chk(void)
+{
+   BYTE   key_driver_data;
+   BYTE   key_d_bit_cnt;
+   BYTE   loop_cnt1;            /*   Loop ƒJƒEƒ“ƒ^                  */
+   BYTE   loop_cnt2;            /*   Loop ƒJƒEƒ“ƒ^                  */
+   BYTE   test_jet;
+   BYTE   test_rpy_bur[4];
+   
+   key_t_data[3] &= 0x03f;
+   key_d_bit_cnt = 0;
+   key_driver_data = 0;
+   
+   if (key_test_sta == CKEY_TSET_REPLY)
+   {
+      key_test_sta = CKEY_TSET_NOP;
+      
+      key_test_code = 0x0000;
+      
+      /*---- ƒpƒlƒ‹ƒL[ ----*/
+      for (loop_cnt1 = 0;loop_cnt1 < CKEY_LCD_DATA_BYTE;loop_cnt1++)
+      {
+         key_driver_data = key_t_data[loop_cnt1];
+         for (loop_cnt2 = 0;loop_cnt2 < 8;loop_cnt2++)
+         {
+            if ((key_driver_data & 0x01) == 0x01)
+            {
+               test_jet = tkey_code_tbl[key_d_bit_cnt];
+               key_mem_keyjet(test_jet);
+            }
+            key_driver_data = (key_driver_data >> 1);
+            key_d_bit_cnt++;
+         }
+      }
+      
+      /*---- AlarmƒL[ ----*/
+      if (fkey_alarm_key == TRUE )
+      {
+         key_mem_keyjet(CKEY_ID_LCD_ALARM);
+      }
+      
+      test_rpy_bur[0] = 0xFB;
+      test_rpy_bur[1] = 0x03;
+      test_rpy_bur[2] = (BYTE)(key_test_code);
+      test_rpy_bur[3] = (BYTE)(key_test_code>>8);
+      
+      Test_data_reply(CTEST_MODE_KEY_TEST,0x2C,test_rpy_bur,4);
+   }
+}
+
+
+#undef _KEY_MAIN_C_

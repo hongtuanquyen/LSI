@@ -1,0 +1,453 @@
+/******************************************************************************
+..     ƒNƒ‰ƒŠƒIƒ““aŒü‚¯                    2007ÓÃÞÙ
+
+      ƒvƒƒWƒFƒNƒg–¼   :
+      ƒtƒ@ƒCƒ‹–¼      : tu_ext.c
+      ‹@”\         : ?Tuner ŠO•”IFˆ—
+------------------------------------------------------------------------------
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212]   V‹Kì¬
+******************************************************************************/
+#include   "../model.h"
+
+#if   _MODEL_RADIO_
+#define      _TU_EXT_C_
+
+#include   "../comm/common.h"
+#include   "../disp/lcd_ext.h"
+#include   "../main/ma_ext.h"
+#include   "../submode/sbm_ext.h"
+#include   "../audio/aud_ext.h"
+#include   "../key/key_def.h"
+
+#include   "tu_sys.h"
+#include   "tu_main.h"
+#include   "tu_ext.h"
+#include   "tu_event.h"
+#include   "tu_io.h"
+#include   "tu_key.h"
+#include   "tu_test.h"
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_band_chk
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTUNER BANDî•ñ
+            FCTU_FM Ë FM BAND’†
+            FCTU_AM Ë AM BAND’†
+      ‹@  ”\   FTUNER BANDî•ñ‚ð’Ê’mˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+[zhang070315] isr modeŽž,isr band‚ð’Ê’m
+******************************************************************************/
+BYTE Tu_band_chk(void)
+{
+   if(Ma_current_mode()==CMA_ISR)
+   {
+      return(CTU_AM);
+   }
+   return(tu_mem[tu_bandno].band);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_bandno_chk
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTUNER BAND NOî•ñ
+            FCTU_BAND0 Ë BAND NO–³‚µ
+            FCTU_BAND1 Ë BAND 1
+            FCTU_BAND2 Ë BAND 2
+            FCTU_BAND3 Ë BAND 3
+      ‹@  ”\   FTUNER BAND NOî•ñ‚ð’Ê’mˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+BYTE Tu_bandno_chk(void)
+{
+   return(tu_mem[tu_bandno].bno);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_pstno_chk
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTUNER Preset NOî•ñ
+            F0 Ë PresetŽóM’†‚Å‚Í‚È‚¢
+            F1`6 Ë Preset”Ô†
+      ‹@  ”\   FTUNER Preset NO‚ð’Ê’mˆ—
+              dispŽg—p‚Ì‚Ý
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+[sun051213] ¶ÚÝÄPresetNo‚ð•Ô‚·‚æ‚¤‚É•ÏX
+******************************************************************************/
+BYTE Tu_pstno_chk(void)
+{
+   return(tu_pno);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_1ms_timer
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FTUNER 1msÀ²Ïˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+void Tu_1ms_timer(void)
+{
+   if (tu_1ms_timer > 0)
+   {
+      tu_1ms_timer --;
+   }
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_5ms_timer
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FTUNER 5msÀ²Ïˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+void Tu_5ms_timer(void)
+{
+   if (tu_5ms_timer > TIMER_OUT)
+   {
+      tu_5ms_timer --;
+   }
+   
+   Tu_5ms_test();
+}
+#if 0
+/******************************************************************************
+..       ŠÖ”–¼  FTu_10ms_timer
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FTUNER 10msÀ²Ïˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+void Tu_10ms_timer(void)
+{
+   ftu_stchk = TRUE;
+   if (tu_aftermute > TIMER_OUT)
+   {
+      tu_aftermute --;
+   }
+
+   if (tu_10ms_timer > 0)
+   {
+      tu_10ms_timer --;
+   }
+}
+#endif
+/******************************************************************************
+..       ŠÖ”–¼  FTu_indicator_set
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTuner²Ý¼Þ¹Þ°À
+      ‹@  ”\   FTunerŠÖŒW²Ý¼Þ¹Þ°À•\Ž¦ì¬ˆ—
+      ”õ   l   FCLCD_IND_MANU
+
+------------------------------------------------------------------------------
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+BYTE Tu_indicator_set( void )
+{
+   BYTE   indicator;
+   BYTE   band;
+   BYTE   bandno;
+   
+   indicator = 0;
+   band = Tu_band_chk();
+   bandno = Tu_bandno_chk();
+   Tu_dispfreqset();
+   
+   if (band == CTU_FM)
+   {
+      indicator |= CLCD_TU_IND_FM;      /* "FM"ƒCƒ“ƒWƒP[ƒ^“_“” */
+      if (Tu_st_check() == TRUE)
+      {
+         indicator |= CLCD_TU_IND_ST ;   /* "ST"ƒCƒ“ƒWƒP[ƒ^“_“” */
+      }
+      if (tu_dispfreq >= 10000)
+      {
+         indicator |= CLCD_TU_IND_S1;               /* "1"00ƒCƒ“ƒWƒP[ƒ^“_“” */
+      }
+      
+   }
+   else
+   {
+      indicator |= CLCD_TU_IND_AM;      /* "AM"ƒCƒ“ƒWƒP[ƒ^“_“” */
+      if (tu_dispfreq >= 1000)
+      {
+         indicator |= CLCD_TU_IND_S1;               /* "1"000ƒCƒ“ƒWƒP[ƒ^“_“” */
+      }
+   }
+   if (bandno == CTU_BAND1)
+   {
+      indicator |= CLCD_TU_IND_ONE;      /* band"1"ƒCƒ“ƒWƒP[ƒ^“_“” */
+   }
+   else if (bandno == CTU_BAND2)
+   {
+      indicator |= CLCD_TU_IND_TWO;      /* band"2"ƒCƒ“ƒWƒP[ƒ^“_“” */
+   }
+   else
+   {
+   }
+   return(indicator);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_isr_indicator_set
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTuner isr ²Ý¼Þ¹Þ°À
+      ‹@  ”\   FTuner isr ŠÖŒW²Ý¼Þ¹Þ°À•\Ž¦ì¬ˆ—
+      ”õ   l   FCLCD_IND_MANU
+
+------------------------------------------------------------------------------
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[matu120730] V‹Kì¬
+******************************************************************************/
+BYTE   Tu_isr_indicator_set( void )
+{
+   BYTE   indicator;
+   
+   indicator = 0;
+   Tu_dispfreqset();
+   
+   indicator |= CLCD_TU_IND_TI ;      /* "E))"ƒCƒ“ƒWƒP[ƒ^“_“” */
+   indicator |= CLCD_TU_IND_AM;      /* "AM"ƒCƒ“ƒWƒP[ƒ^“_“” */
+   if (tu_dispfreq >= 1000)
+   {
+      indicator |=CLCD_TU_IND_S1;      /* "1"000ƒCƒ“ƒWƒP[ƒ^“_“” */
+   }
+   
+   return(indicator);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_mainmd_check
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FTRUE->seek/ps/as’†
+             :FALSE->‘¼Ó°ÄÞ’†
+      ‹@  ”\   FTuner main mode checkˆ—
+      ”õ   l   F
+------------------------------------------------------------------------------
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[zhang070412] V‹Kì¬
+******************************************************************************/
+BYTE Tu_mainmd_check( void )
+{
+   if((tu_m_mode == CTU_M_SEEK)
+      ||(tu_m_mode == CTU_M_AS)
+      ||(tu_m_mode == CTU_M_SCAN)
+      ||(tu_m_mode == CTU_M_CMAN))
+   {
+      return(TRUE);
+   }
+   return(FALSE);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_st_check
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   FstŒŸo ’l
+      ‹@  ”\   FTuner st ŒŸo‚ð’Ê’mˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[zhang070309] V‹Kì¬
+******************************************************************************/
+BYTE Tu_st_check(void)
+{
+   BYTE   tu_st;
+
+   tu_st = 0;
+   if (Tu_band_chk() == CTU_FM)
+   {
+      if (ftu_stero == TRUE)
+      {
+         tu_st = 1;
+//         return(tu_st);
+      }
+   }
+   return(tu_st);
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_lcddata_set
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F•\Ž¦ÃÞ°ÀŠi”[´Ø±Îß²ÝÀ
+      ‹@  ”\   FTuner•\Ž¦ÃÞ°Àì¬ˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+void Tu_lcddata_set(TDP_TUNER * tudisp, BYTE dispmode)
+{
+   BYTE   bcddata[3];
+   BYTE   iRet;
+
+   tudisp->band = Tu_band_chk();
+   if(tu_m_mode == CTU_M_PSTWT)
+   {
+      tudisp->preno = tu_wrtpno;
+   }
+   else if (tu_m_mode == CTU_M_AS)
+   {
+      tudisp->preno = 0;
+   }
+   else
+   {
+      tudisp->preno = tu_pno;
+   }
+
+   Tu_dispfreqset();               /* Žü”g”•\Ž¦—p•ÏŠ· */
+
+   iRet = Cm_lib_wHEXtoBCD(tu_dispfreq,bcddata);   /* HEX¨BCD•ÏŠ· */
+
+   tudisp->frq[0] = bcddata[0];
+   tudisp->frq[1] = bcddata[1];
+   tudisp->frq[2] = bcddata[2];
+
+   if (tu_m_mode == CTU_M_SCAN)   /* u070723’£vlow3 buglist‚Ì 97C³*/
+   {
+//      Sbm_mode_cancel(CMA_TUNER);
+      if(tu_m_seq == CTU_SCANWAIT_SEQ)   /* SCANŽóM’† */
+      {
+         tudisp->mode = CLCD_TU_SCANWAIT;
+      }
+      else                     /* SCAN SEEK’† */
+      {
+         tudisp->mode = CLCD_TU_SEEK;
+      }
+   }
+   else if (tu_m_mode == CTU_M_PSTWT)
+   {
+      tudisp->mode = CLCD_TU_PSTWT;
+   }
+   else if(tu_m_mode == CTU_M_SEEK)
+//         (tu_m_mode == CTU_M_CMAN))
+   {
+//      Sbm_mode_cancel(CMA_TUNER);
+      tudisp->mode = CLCD_TU_SEEK;
+   }
+   else if(tu_m_mode == CTU_M_AS)
+   {
+      tudisp->mode = CLCD_TU_AS;
+   }
+   else
+   {
+      ;
+   }
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_u_lcddata
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F•\Ž¦ÃÞ°ÀŠi”[´Ø±Îß²ÝÀ
+      ‹@  ”\   FTuner isr•\Ž¦ÃÞ°Àì¬ˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[matu120724] V‹Kì¬
+******************************************************************************/
+void Tu_isr_lcddata_set(TDP_ISR   * isrdisp,BYTE   dispmode)
+{
+   BYTE   bcddata[3];
+   BYTE   iRet;
+
+   isrdisp->band = Tu_band_chk();
+   Tu_dispfreqset();               /* Žü”g”•\Ž¦—p•ÏŠ·  trong file tu_event.c*/
+
+   iRet = Cm_lib_wHEXtoBCD(tu_dispfreq,bcddata);   /* HEX¨BCD•ÏŠ· */
+
+   isrdisp->frq[0] = bcddata[0];
+   isrdisp->frq[1] = bcddata[1];
+   isrdisp->frq[2] = bcddata[2];
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FTu_amband_set
+      ˆø  ”   F–³‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FAMƒoƒ“ƒhÝ’èˆ—
+      C³—š—ð   y”NŒŽ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[matu120724] V‹Kì¬
+******************************************************************************/
+void Tu_amband_set(void)
+{
+   tu_bandno = CTU_BAND_AM;   /* AMŽw’è */
+   Tu_lastcall();
+}
+
+/********************************************************************************/
+/*   ŠÖ”–¼  FTu_isrmd_on                                          */
+/*   ˆø  ”   Fmode:                                                */
+/*   –ß‚è’l   F‚È‚µ                                                */
+/*   ‹@  ”\   FTuner ISRƒ‚[ƒhON‚ÉÝ’è                                 */
+/*   ’ˆÓŽ–€:                                                   */
+/*   C³—š—ð   y”NŒŽ“úz   yVersionz   y–¼‘Oz    yà–¾z               */
+/*------------------------------------------------------------------------------*/
+/*            2010.08.09      0.0         Šx      V‹Kì¬               */
+/********************************************************************************/
+void   Tu_isrmd_on(void)
+{
+   ftu_isr = ON;
+}
+/********************************************************************************/
+/*   ŠÖ”–¼  FTu_isrmd_off                                          */
+/*   ˆø  ”   Fmode:                                                */
+/*   –ß‚è’l   F‚È‚µ                                                */
+/*   ‹@  ”\   FTuner ISRƒ‚[ƒhOFF‚ÉÝ’è                                 */
+/*   ’ˆÓŽ–€:                                                   */
+/*   C³—š—ð   y”NŒŽ“úz   yVersionz   y–¼‘Oz    yà–¾z               */
+/*------------------------------------------------------------------------------*/
+/*            2010.08.09      0.0         Šx      V‹Kì¬               */
+/********************************************************************************/
+void   Tu_isrmd_off(void)
+{
+   ftu_isr = OFF;
+}
+
+/*   ƒeƒXƒgƒ‚[ƒh‚Ì’¼ÚAM/FM1‘I‘ð‚ð‘Î‰žA100826AŠx   */
+void   Tu_bnd_set(BYTE bandno)
+{
+   Tu_job_clear();
+   if( bandno == CTU_BAND_AM )
+   {
+      tu_bandno = CTU_BAND_AM;
+   }
+   else
+   {
+      if (( Ma_model_dest() >= CMA_MODEL_AMFM_J )
+        &&( Ma_model_dest() <= CMA_MODEL_AMFM_X ))
+      {
+         tu_bandno = CTU_BAND_FM1;
+      }
+      else
+      {
+         return;
+      }
+   }
+   Tu_lastcall();                  /* ×½ÄŒÄo */
+   tu_m_mode = CTU_M_BANDCHG;         /* BandChangeÓ°ÄÞ¾¯Ä */
+   Lcd_1shot_key_cancel(CLCD_1SHOT_OFF);      /* ‚·‚×‚ÄŽžŒÀ•\Ž¦·¬Ý¾Ù */
+   Lcd_disp_base(CMA_TUNER);
+   Sbm_mode_cancel(CMA_TUNER);
+}
+
+void Tu_beep_mute(BYTE on_off)
+{
+   Tu_beep_mute_set(on_off);
+}
+#undef  _TU_EXT_C_
+
+#endif

@@ -1,0 +1,50 @@
+//タイマ割り込み
+//ITU0使用　
+//20msごとに割り込み、50回の割り込みでLED点灯反転
+//itu_1.c
+
+#include  <3048.h>                //3048、3052の内部I/O定義
+#include "io.h"
+const int DELAY = 25000;
+int c;                            //割り込み回数、外部変数とする
+
+//ITUインターバルタイマ割り込み
+void int_imia0 (void)
+{
+    ITU0.TSR.BIT.IMFA = 0;        //割り込みステータスフラグクリア
+    c-=1;
+    if(c==0){
+      //  P5.DR.BYTE = ~P5.DR.BYTE; //LED出力データを反転
+      //  c=50;
+    }
+}
+
+void delay(int t)
+{
+      ITU0.TCNT        =0; 
+  ITU.TSTR.BIT.STR0 = 1;  
+  while(t--)
+  {
+    while(ITU0.TCNT< 25000);
+      ITU0.TCNT = 0;
+  }
+  
+}
+int main(void)
+{
+    P5.DDR = 0xff;
+    ITU0.TCR.BIT.CCLR    = 1;     //カウンタクリア要因
+    ITU0.TCR.BIT.TPSC    = 0;     //タイマプリスケーラ25MHz/8=3.125MHz
+      //3.125MHz/62,500=50Hz、周期20ms
+    ITU0.TIER.BIT.IMIEA = 1;      //IMFAフラグによる割り込み許可
+    ITU.TSTR.BIT.STR0 = 0;        //タイマスタート
+    P5.DR.BYTE = 0xff;            //LED出力データ初期値
+    c=50;                         //割り込み回数
+    EI;                           //割り込み許可
+    while(1)
+    {
+     P5.DR.BYTE = ~P5.DR.BYTE; //LED出力データを反転
+     delay(1000);
+    }
+   
+}

@@ -1,0 +1,266 @@
+/******************************************************************************
+..     ƒNƒ‰ƒŠƒIƒ““aŒü‚¯   danh cho cong ty Clarion                 2007ÓÃŞÙ
+
+      ƒvƒƒWƒFƒNƒg–¼   :
+      ƒtƒ@ƒCƒ‹–¼      : main.c
+      ‹@”\         : SystemÒ²İÙ°Ìßˆ—   Xu li vong lap System main
+------------------------------------------------------------------------------
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051125]   V‹Kì¬
+******************************************************************************/
+#define   _MAIN_C_
+
+#include    <stdio.h>
+#include    <string.h>
+#include   "../model.h"
+#include   "../comm/common.h"
+#include    "../audio/aud_sys.h"
+#include    "../disp/lcd_sys.h"
+#include    "../power/PW_inc.h"
+#include    "../key/key_sys.h"
+#include   "../io/IO_inc.h"
+#include    "../tuner/tu_sys.h"
+#include   "../submode/sbm_sys.h"
+#include   "../testmode/test_sys.h"
+#include    "../aux1/aux_sys.h"
+#if    _MODEL_EEPROM_
+#include    "../eeprom/eeprom_ext.h"
+#include    "../eeprom/eeprom_sys.h"   /* QAC‘Îô */
+#endif
+
+#include   "main.h"
+#include   "ma_ext.h"
+#include   "ma_sys.h"
+
+/*----------------------------------------------------
+   ŠÖ”ƒvƒƒgƒ^ƒCƒv
+----------------------------------------------------*/
+static void   Ma_message_call(BYTE  msg);
+static void   Ma_message_process(void);
+static void   Ma_message_clear(void);
+static void   Ma_cur_message_get(void);
+
+/*----------------------------------------------------
+   ¼½ÃÑºÏİÄŞó•tˆ—“o˜^Ã°ÌŞÙ
+----------------------------------------------------*/
+typedef   struct{
+   void   (*func)(BYTE);
+}TMA_SYSTBL;
+
+const TMA_SYSTBL tma_sys_tbl[] =
+{
+   Key_sys_message,
+   Test_sys_message,
+   Sbm_sys_message,
+   Tu_sys_message,
+   Aux_sys_message,
+   Aud_sys_message,
+   Lcd_sys_message
+};
+
+const TMA_SYSTBL tma_sys_ini_ng_tbl[] =
+{
+   Key_sys_message,
+   Test_sys_message,
+   Aud_sys_message,
+   Lcd_sys_message
+};
+
+/******************************************************************************
+..       ŠÖ”–¼  Fmain 
+      ˆø  ”   F‚È‚µ                   Doi so: Khong
+      –ß‚è’l   F–³‚µ                   Returned value: Khong
+      ‹@  ”\   FSystemMainÙ°Ìßˆ—AÀ²Ï¶³İÄˆ—      Xu li vong lap System Main     Xu li Timer Counter
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051128] V‹Kì¬
+[sakurada060729] testVer‚ÅØ¾¯Ä‰ñ˜H’â~i _RESET_DISABLE_ j
+[sun070313] _RESET_DISABLE_’è‹`íœ•ÏX
+[sun090325] EEPROM RESET‚ÅMainÙ°Ìß‚©‚ç”²‚¯‚é‚æ‚¤‚É•ÏX
+[yamamoto20120727] Ø¾¯Äˆ—íœ
+[yamamoto20121112] WDT½À°Äˆ—íœAIo_sfr_initial_set“à‚Ås‚¤
+******************************************************************************/
+int   main(void)
+{
+   __DisableInterrupt();
+
+   Io_sfr_initial_set();            /* Ú¼Ş½À‰Šúİ’è WDT½À°Ä   Xem IO_sfr.c và sfr884200.h trong folder phan mem SanyoX16*/
+   
+   Ma_message_clear();               /* Ò¯¾°¼ŞÊŞ¯Ì§‰Šú‰»    Khoi tao message buffer */
+   Ma_message_call(CMSG_INITIAL);      /* ‰Šú‰»Ò¯¾°¼Ş”­s       ban hanh message khoi tao. CMSG_INITIAL nam trong common.h*/
+   
+   /*-EEPROM‘Î‰-----------------------------*/
+   MIO_OUT_pSYS_ON(LOW);            /* SYS_ON’[q§Œä */
+   Io_sfr_accoff_in();               /* 12M”­U’â~ARC”­UŠJn */
+   /*----------------------------------------*/
+   
+   ma_cur_msg = CMSG_MAIN;            /* ¶ÚİÄÒ¯¾°¼ŞMainÙ°Ìß‚É‰Šú‰» */
+
+   __EnableInterrupt( 0 ) ;
+
+   while(1)
+   {
+      Ma_message_process();               /* MainÙ°ÌßÒ¯¾°¼Ş”­s */
+
+   }
+   #if 0      /* ƒŒƒrƒ…[w“E–€ */
+   __Reset();
+   #endif
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FMa_message_process
+      ˆø  ”   F‚È‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FSystemÒ¯¾°¼Ş”­s§Œäˆ—
+            FÒ¯¾°¼ŞÊŞ¯Ì§‚ğŠm”F‚µA”­s‚³‚ê‚Ä‚¢‚È‚¢Ò¯¾°¼Ş‚ ‚ê‚Î”­sA
+            F‚È‚¯‚ê‚ÎAÒ²İÙ°ÌßÒ¯¾°¼Ş‚ğ”­s
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+static void   Ma_message_process(void)
+{
+   void   (*sys_func)(BYTE);
+   BYTE   iLoop;
+   BYTE   iSize;
+   BYTE   ini_sta;
+
+   Pw_sys_message(ma_cur_msg);         /* “dŒ¹Ó¼Ş­°Ù */
+   Ma_sys_message(ma_cur_msg);         /* MainÓ¼Ş­°Ù */
+   #if (_MODEL_EEPROM_ == YES)
+   Eeprom_sys_message(ma_cur_msg);      /* BATT OFF‚ÅEEPROM‚Ì‚İ“®ì‰Â”\  chi thuc hien khi BATT OFF, neu trong EEPROM device co data duoc luu san trong do
+                                                                        thi lenh này se thuc hien viec doc data tu EEPROM device.*/
+   #endif
+   Ma_cur_message_get();            /* ”­sºÏİÄŞÄ¾¯Ä */
+   
+   // Ma_Chk_EEP_Initial trong file ma_ext.c
+   if ((Ma_Chk_EEP_Initial() == CMA_INIT_STA_ALL_OK)||
+      (Ma_Chk_EEP_Initial() == CMA_INIT_STA_CKAL_NG))  
+   {
+      ini_sta = TRUE;
+   }
+   else
+   {
+      ini_sta = FALSE;
+   }
+   
+   /* ƒƒCƒ“ƒ‹[ƒv */
+   if (ini_sta == TRUE)
+   {
+      iSize =  sizeof(tma_sys_tbl)/sizeof(TMA_SYSTBL);
+      for (iLoop = 0; iLoop < iSize; iLoop ++)
+      {
+         sys_func = tma_sys_tbl[iLoop].func;
+         
+         (*sys_func)( ma_cur_msg );
+      }
+   }
+   else  
+   {
+      iSize =  sizeof(tma_sys_ini_ng_tbl)/sizeof(TMA_SYSTBL);
+      for (iLoop = 0; iLoop < iSize; iLoop ++)
+      {
+         sys_func = tma_sys_ini_ng_tbl[iLoop].func;
+         (*sys_func)( ma_cur_msg );
+      }
+   }
+}
+/******************************************************************************
+..       ŠÖ”–¼  FMa_message_set
+      ˆø  ”   F‚È‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FSystemÒ¯¾°¼Ş“o˜^ˆ—
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+[sun051213] Ò¯¾°¼Ş“o˜^ŒãAÎß²İÀ²İ¸ØÒİÄ‚·‚é‚æ‚¤‚É•ÏX
+******************************************************************************/
+static void   Ma_cur_message_get(void)
+{
+   if (ma_msg_outptr != ma_msg_inptr)
+   {
+      ma_cur_msg = ma_sysmsg[ma_msg_outptr];
+      ma_msg_outptr ++;
+      if( ma_msg_outptr >= CMA_MSGMAX )   // CMA_MSGMAX trong main.h
+      {
+         ma_msg_outptr = 0;
+      }
+   }
+   else
+   {
+      ma_cur_msg = CMSG_MAIN;
+   }
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FMa_message_clear
+      ˆø  ”   F‚È‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FSystemÒ¯¾°¼Ş¸Ø±ˆ—
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+******************************************************************************/
+static void   Ma_message_clear(void)
+{
+   memset(ma_sysmsg,0x00,sizeof(ma_sysmsg));      /* Ò¯¾°¼ŞŠi”[ÊŞ¯Ì§0¸Ø±   arrray ma_sysmsg chua toi da 50 phan tu.*/
+   ma_msg_inptr = 0;                        /* Ò¯¾°¼ŞŠi”[Îß²İÀ¸Ø±  Clear con tro chua message */
+   ma_msg_outptr = 0;                        /* Ò¯¾°¼Ş”­sÎß²İÀ¸Ø±  Clear con tro ban hanh message */
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FMa_message_call
+      ˆø  ”   F‚È‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   F‰ŠúÒ¯¾°¼Ş’Ê’mˆ—    Xu li viec thong bao message khoi tao 
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051128] V‹Kì¬
+[sun090401] ‰Šú‰»EEPROM•K‚¸æ“ª‚Éº°Ù‚³‚ê‚é‚±‚Æ
+******************************************************************************/
+static void   Ma_message_call(BYTE  msg)
+{
+   #if    _MODEL_EEPROM_
+   Eeprom_sys_message( msg );
+   #endif
+   Ma_sys_message( msg );            /* ‰Šúİ’è“Ç‚İ‚İ‚ ‚é‚Ì‚ÅA•K‚¸ˆê”ÔÅ‰‚Åº°Ù */
+   Pw_sys_message( msg );
+   Test_sys_message( msg );
+   Key_sys_message( msg );
+   Sbm_sys_message( msg );
+   Tu_sys_message( msg );
+   Aux_sys_message( msg);
+   Aud_sys_message( msg );
+   Lcd_sys_message( msg );
+}
+
+/******************************************************************************
+..       ŠÖ”–¼  FMa_message_set
+      ˆø  ”   F‚È‚µ
+      –ß‚è’l   F–³‚µ
+      ‹@  ”\   FSystemÒ¯¾°¼Ş“o˜^ˆ—
+      C³—š—ğ   y”NŒ“úzyVersionzy–¼‘Oz yà–¾z
+------------------------------------------------------------------------------
+[sun051212] V‹Kì¬
+[sun051213] Ò¯¾°¼Ş“o˜^ŒãAÎß²İÀ²İ¸ØÒİÄ‚·‚é‚æ‚¤‚É•ÏX
+******************************************************************************/
+void   Ma_message_set(BYTE mode, BYTE  msg)
+{
+   /* HOLDXIN‚Å‚ ‚ê‚ÎA‘¼‚ÌÒ¯¾°¼Ş‘S•”¸Ø±   If it is HOLDXIN, clear all other messages */
+   if ((mode == CMA_POWER) && ( msg == CMSG_HOLDX_IN))
+   {
+      Ma_message_clear();
+   }
+   ma_sysmsg[ma_msg_inptr] = msg;
+
+   ma_msg_inptr ++ ;
+
+   if (ma_msg_inptr >= CMA_MSGMAX)
+   {
+      ma_msg_inptr = 0;
+   }
+}
+
+#undef      _MAIN_C_

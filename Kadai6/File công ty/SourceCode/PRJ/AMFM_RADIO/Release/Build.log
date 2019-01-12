@@ -1,0 +1,8 @@
+C:\PROGRA~2\SanyoX16\Gcc\Cc59.exe -O2 -D__LC884200__ D:\LSIR&D~1\Kadai6\Kadai6\SOURCE~1\PRJ\SRC\main\main.c -o Release\main.o
+xstormy16-elf-gcc: D:\LSIR: No such file or directory
+xstormy16-elf-gcc: warning: '-x c' after last input file has no effect
+xstormy16-elf-gcc: no input files
+The system cannot find the path specified.
+C:\PROGRA~2\SanyoX16\Gcc\IdeMake.exe: *** [Release\main.o] Error 1
+
+    ===== Build complete with error =====

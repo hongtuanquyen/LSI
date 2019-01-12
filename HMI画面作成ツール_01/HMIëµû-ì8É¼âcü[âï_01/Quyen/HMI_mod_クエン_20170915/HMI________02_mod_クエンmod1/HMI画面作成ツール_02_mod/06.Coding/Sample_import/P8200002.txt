@@ -1,0 +1,785 @@
+Type_display
+ID_No:	1
+Height:	480
+Width:	640
+
+
+Type_button
+ID_No:	103
+Position:	3
+Height:	55
+Width:	150
+X_axis:	10
+Y_axis:	10
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"Button"
+Is_toggle:	1
+Image_on:	"Image\02_dmt.bmp"
+Image_off:	"Image\17_off.bmp"
+Image_press:"Image\17_on.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	104
+Position:	4
+Height:	55
+Width:	150
+X_axis:	482
+Y_axis:	10
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"Button"
+Is_toggle:	1
+Image_on:	"Image\02_dmt.bmp"
+Image_off:	"Image\17_off.bmp"
+Image_press:"Image\17_on.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	105
+Position:	5
+Height:	55
+Width:	150
+X_axis:	323
+Y_axis:	10
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"Button"
+Is_toggle:	1
+Image_on:	"Image\02_dmt.bmp"
+Image_off:	"Image\17_off.bmp"
+Image_press:"Image\17_on.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	106
+Position:	7
+Height:	55
+Width:	150
+X_axis:	166
+Y_axis:	10
+Size_text:	12
+Text_jpn:	"ボタン"
+Text_eng:	"Button"
+Is_toggle:	1
+Image_on:	"Image\02_dmt.bmp"
+Image_off:	"Image\17_off.bmp"
+Image_press:"Image\17_on.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	108
+Position:	17
+Height:	40
+Width:	119
+X_axis:	7
+Y_axis:	341
+Size_text:	12
+Text_jpn:	"MODE"
+Text_eng:	"MODE"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	109
+Position:	18
+Height:	40
+Width:	119
+X_axis:	133
+Y_axis:	341
+Size_text:	12
+Text_jpn:	"WAVE"
+Text_eng:	"WAVE"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	110
+Position:	19
+Height:	40
+Width:	119
+X_axis:	257
+Y_axis:	341
+Size_text:	12
+Text_jpn:	"AGC"
+Text_eng:	"AGC"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	111
+Position:	20
+Height:	40
+Width:	119
+X_axis:	385
+Y_axis:	341
+Size_text:	12
+Text_jpn:	"COUNT"
+Text_eng:	"COUNT"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	112
+Position:	22
+Height:	40
+Width:	117
+X_axis:	511
+Y_axis:	341
+Size_text:	12
+Text_jpn:	"TIMER"
+Text_eng:	"TIMER"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	113
+Position:	32
+Height:	40
+Width:	119
+X_axis:	7
+Y_axis:	435
+Size_text:	12
+Text_jpn:	"SIGNAL"
+Text_eng:	"SIGNAL"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	114
+Position:	33
+Height:	40
+Width:	119
+X_axis:	133
+Y_axis:	435
+Size_text:	12
+Text_jpn:	"RANGE1"
+Text_eng:	"RANGE1"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	115
+Position:	34
+Height:	40
+Width:	119
+X_axis:	259
+Y_axis:	435
+Size_text:	12
+Text_jpn:	"RANGE2"
+Text_eng:	"RANGE2"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	116
+Position:	35
+Height:	40
+Width:	58
+X_axis:	385
+Y_axis:	435
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_button
+ID_No:	117
+Position:	36
+Height:	40
+Width:	180
+X_axis:	448
+Y_axis:	435
+Size_text:	12
+Text_jpn:	"SET-POS"
+Text_eng:	"SET-POS"
+Is_toggle:	0
+Image_off:	"Image\02_off.bmp"
+Image_press:"Image\02_on.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	255
+Text_color_on_G:	255
+Text_color_on_B:	255
+Text_color_press_R:	0
+Text_color_press_G:	0
+Text_color_press_B:	0
+
+
+Type_text
+ID_No:	201
+Position:	1
+Height:	479
+Width:	639
+X_axis:	0
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		128
+Back_color_G:		128
+Back_color_B:		255
+
+
+Type_text
+ID_No:	202
+Position:	2
+Height:	205
+Width:	639
+X_axis:	0
+Y_axis:	79
+Size_text:	12
+Text_jpn:	"D-Ver01.04\r\nM-VerS108D0                                                                                     MD-Ver3.07\r\nP-VerS108D0                                                                                     PD-Verintc1"
+Text_eng:	"D-Ver01.04\r\nM-VerS108D0                                                                                     MD-Ver3.07\r\nP-VerS108D0                                                                                     PD-Verintc1"
+Is_label:	0
+Align_text:	"BottomLeft"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	207
+Position:	9
+Height:	50
+Width:	117
+X_axis:	7
+Y_axis:	289
+Size_text:	20
+Text_jpn:	"MODE1"
+Text_eng:	"MODE1"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	208
+Position:	11
+Height:	50
+Width:	117
+X_axis:	133
+Y_axis:	289
+Size_text:	20
+Text_jpn:	"SIN"
+Text_eng:	"SIN"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	209
+Position:	14
+Height:	50
+Width:	117
+X_axis:	259
+Y_axis:	289
+Size_text:	20
+Text_jpn:	"OFF"
+Text_eng:	"OFF"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	210
+Position:	15
+Height:	50
+Width:	117
+X_axis:	385
+Y_axis:	289
+Size_text:	20
+Text_jpn:	"OFF"
+Text_eng:	"OFF"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	211
+Position:	16
+Height:	50
+Width:	117
+X_axis:	511
+Y_axis:	289
+Size_text:	20
+Text_jpn:	"ON"
+Text_eng:	"ON"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	212
+Position:	23
+Height:	50
+Width:	117
+X_axis:	7
+Y_axis:	383
+Size_text:	20
+Text_jpn:	"INT"
+Text_eng:	"INT"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	213
+Position:	25
+Height:	50
+Width:	117
+X_axis:	133
+Y_axis:	383
+Size_text:	20
+Text_jpn:	"1/1"
+Text_eng:	"1/1"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	214
+Position:	27
+Height:	50
+Width:	117
+X_axis:	259
+Y_axis:	383
+Size_text:	20
+Text_jpn:	"1/1"
+Text_eng:	"1/1"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	215
+Position:	30
+Height:	50
+Width:	58
+X_axis:	385
+Y_axis:	383
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	216
+Position:	31
+Height:	49
+Width:	180
+X_axis:	448
+Y_axis:	383
+Size_text:	12
+Text_jpn:	"0.0mm"
+Text_eng:	"0.0mm"
+Is_label:	0
+Align_text:	"MiddleCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		255
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	217
+Position:	6
+Height:	97
+Width:	127
+X_axis:	3
+Y_axis:	285
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	218
+Position:	8
+Height:	97
+Width:	127
+X_axis:	127
+Y_axis:	285
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	219
+Position:	10
+Height:	97
+Width:	127
+X_axis:	254
+Y_axis:	285
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	220
+Position:	12
+Height:	97
+Width:	127
+X_axis:	381
+Y_axis:	285
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	221
+Position:	13
+Height:	97
+Width:	127
+X_axis:	508
+Y_axis:	285
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	222
+Position:	21
+Height:	98
+Width:	127
+X_axis:	3
+Y_axis:	380
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	223
+Position:	24
+Height:	98
+Width:	127
+X_axis:	127
+Y_axis:	380
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	224
+Position:	26
+Height:	98
+Width:	127
+X_axis:	254
+Y_axis:	380
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	225
+Position:	28
+Height:	98
+Width:	64
+X_axis:	381
+Y_axis:	380
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+
+
+Type_text
+ID_No:	226
+Position:	29
+Height:	97
+Width:	187
+X_axis:	448
+Y_axis:	380
+Size_text:	12
+Text_jpn:	"テキスト"
+Text_eng:	"Text"
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		255
+Back_color_B:		255
+-----------------------------------------------------------------

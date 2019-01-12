@@ -1,0 +1,341 @@
+/***************************************************************
+   クラリオン殿向け     Lcd_1shot_cancel
+   プロジェクト名   ：'12年モデル開発
+   ファイル名      ：lcd_ext.c
+   モジュール名   ：LCD(表示)
+   機   能         ：インタフェース関数ファイル
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+#define   _LCD_EXT_C_
+
+#include   "../model.h"
+
+#include   "../comm/common.h"
+#include   "../power/pw_func_ext.h"
+#include   "../submode/sbm_ext.h"
+#include   "../main/ma_ext.h"
+#include   "../tuner/TU_inc.h"
+
+#include    <stdio.h>
+#include   <string.h>
+
+
+#include   "lcd_main.h"
+#include   "lcd_mode.h"
+#include   "lcd_sys.h"
+#include   "lcd_ext.h"
+#include   "lcd_tbl.h"
+#include   "lcd_send.h"
+
+#define      EDITWAIT      0xFF
+static  void Lcd_disp_baseset(BYTE mode_id,BYTE tim);
+
+/****************************************************************
+      関数名：Lcd_1shotsrc_cancel
+      引  数：無し
+      戻り値：無し
+      機  能：ﾓｰﾄﾞﾁｪﾝｼﾞ表示ｷｬﾝｾﾙ
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+BOOL Lcd_1shotsrc_cancel(void)  // duoc dung trong file lcd_sys.c, khi nhan duoc message Mode change
+{
+   if((lcd_src_mode > OFF) && (lcd_src_mode < CLCD_SRC_MAX))
+   {
+      lcd_src_mode = OFF;         /* ｿｰｽﾁｪﾝｼﾞﾓｰﾄﾞ解除 */
+      lcd_src_tim = OFF;         /* ﾀｲﾏ解除 */
+      return(OK);
+   }
+   else
+   {
+      return(NG);
+   }
+}
+/****************************************************************
+      関数名：Lcd_1shot_disp
+      引 数1：lcd_ext.hﾌｧｲﾙ参照
+      引 数2：lcd_ext.hﾌｧｲﾙ参照
+      戻り値：無し
+      機  能：一時表示関数   temporary display function
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_1shot_disp(BYTE mode, BYTE tim)
+{
+   if((mode > OFF) && (mode < CLCD_1SHOT_MAX))
+   {
+      lcd_1shot_mode= mode;      /* 表示ﾓｰﾄﾞ設定 */
+      lcd_tim_1shot = tim;      /* ﾀｲﾏ設定 */
+      lcd_edit_tim = 0;
+   }
+}
+/****************************************************************
+      関数名：Lcd_1shot_cancel
+      引  数：mode_id(ma_ext.h参照)
+            CLCD_1SHOT_OFF⇒強制ｷｬﾝｾﾙ
+      戻り値：無し
+      機  能：一時表示ｷｬﾝｾﾙ関数
+      コメント：キー以外でｷｬﾝｾﾙ(状態変わる専用)
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_1shot_cancel(BYTE mode_id) // Khi PWROFF
+{
+   BYTE mode;
+   mode = Ma_current_mode(); // tra ve mode hien tai . Noi dung h瀘: return(ma_mode[CMA_CUR_MD].cond.mode);
+   if((mode_id != mode)&&(mode_id != CLCD_1SHOT_OFF))
+   {
+      return;            /* 強制ｷｬﾝｾﾙ要求無ければ、現ﾓｰﾄﾞではない場合、ｷｬﾝｾﾙしない  If there is no forced cancel request, 
+                                                                              if not in current mode, do not cancel */
+   }
+   if((lcd_1shot_mode > OFF) && (lcd_1shot_mode < CLCD_1SHOT_MAX))      /* 一時表示ではない  Not temporary display  CLCD_1SHOT_MAX trong lcd_ext.h
+                                                                            lcd_1shot_mode duoc khoi tao trong lcd_ext.h*/
+   {
+      /* ADJ/SOUNDモード中edit timer延長しない[070825he]  Khong duoc keo dai edit timer trong mode ADJ/SOUND*/
+      #if 0
+      if((Sym_mode_check() == OFF)&&(Sel_mode_check() ==  OFF))
+      {
+         /*[20070526]edit timer延長*/
+         Lcd_editime_set();
+      }
+      #endif
+      lcd_1shot_mode = OFF;      /* ﾓｰﾄﾞ解除   mode release, b緤 bo mode*/
+      lcd_tim_1shot = OFF;      /* ﾀｲﾏｸﾘｱ  Clear timer*/
+   }
+}
+/****************************************************************
+      関数名：Lcd_1shot_cancel
+      引  数：mode_id(ma_ext.h参照)
+            CLCD_1SHOT_OFF⇒強制ｷｬﾝｾﾙ
+      戻り値：無し
+      機  能：一時表示ｷｬﾝｾﾙ関数
+      コメント：キーでｷｬﾝｾﾙ(キー操作専用)
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_1shot_key_cancel(BYTE mode_id)
+{
+   BYTE mode;
+   
+   mode = Ma_current_mode();
+   /* ｶﾚﾝﾄﾓｰﾄﾞ以外＆強制ｷｬﾝｾﾙ要求がなければ、処理しない */
+   if((mode_id != mode) && (mode_id != CLCD_1SHOT_OFF))
+   {
+      return;
+   }
+   /* ｿｰｽ遷移一時表示ｷｬﾝｾﾙ */
+   Lcd_1shotsrc_cancel();
+}
+/****************************************************************
+      関数名：Lcd_disp_base
+      引  数：mode_id(ma_ext.hﾌｧｲﾙ参照)
+      戻り値：無し
+      機  能：ベース表示要求(一時表示ｷｬﾝｾﾙ)
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_disp_base(BYTE mode_id)
+{
+   BYTE mode;
+   
+   mode = Ma_current_mode();
+   if(mode == mode_id)            /* ｶﾚﾝﾄﾓｰﾄﾞ以外受付けない */
+   {
+      Lcd_1shot_key_cancel(mode_id);            /* キー操作で時限表示ｷｬﾝｾﾙ  thuc hien ham Lcd_1shotsrc_cancel()*/
+      Lcd_disp_baseset(mode_id,CLCD_BASE_5s);   /* 5sﾍﾞｰｽ表示 */
+   }
+}
+/****************************************************************
+      関数名：Lcd_disp_1shot_base
+      引  数：mode_id(ma_ext.hﾌｧｲﾙ参照)
+      戻り値：無し
+      機  能：ベース表示要求(一時表示ｷｬﾝｾﾙしない)
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_disp_1shot_base(BYTE mode_id)
+{
+   BYTE mode;
+   
+   mode = Ma_current_mode();
+   if(mode == mode_id)                     /* ｶﾚﾝﾄﾓｰﾄﾞ以外受付けない */
+   {
+      Lcd_disp_baseset(mode_id,CLCD_BASE_5s);   /* 5sﾍﾞｰｽ表示 */
+   }
+}
+
+/****************************************************************
+      関数名：Lcd_base_scrll
+      引  数：mode_id(ma_ext.hﾌｧｲﾙ参照)      Argument: mode_id (see ma_ext.h file)
+      戻り値：無し
+      機  能：ベース表示要求&ｽｸﾛｰﾙ要求        Base display request & scroll request
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_base_scrll(BYTE mode_id)
+{
+   BYTE ma_mode;
+   
+   ma_mode = Ma_current_mode();      /* ｶﾚﾝﾄﾓｰﾄﾞ取得           */
+   if(ma_mode == mode_id )            /* ｶﾚﾝﾄﾓｰﾄﾞ以外処理しない   Do not process except current mode */
+   {
+      Lcd_disp_baseset(mode_id,CLCD_BASE_5s);         /* 5sﾍﾞｰｽ表示要求   5s base display request   CLCD_BASE_5s = 50, su dung trong ham Lcd_100ms_cnt()
+                                                                         khi nhan duoc message CMSG_100MS_TIMER*/
+   }
+}
+
+void Lcd_base_disp_cancel(void)
+{
+   if (Ma_get_clock() == TRUE )
+   {
+      lcd_base_mode = OFF;
+      lcd_tim_base = TIMER_OUT;
+   }
+}
+/********************************************************************
+         関 数 名：Lcd_disp_baseset
+         引    数：無し
+         戻 り 値：無し
+         機    能：ﾍﾞｰｽ表示要求       Base display request
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+static  void Lcd_disp_baseset(BYTE mode_id,BYTE tim)
+{
+   BYTE mode;
+   switch(mode_id)
+   {
+      case CMA_TUNER:
+         lcd_base_mode = CLCD_BASE_TUNER;
+         break;
+      case CMA_ISR:
+         lcd_base_mode = CLCD_BASE_ISR;
+         break;
+      case CMA_AUX:
+         lcd_base_mode = CLCD_BASE_AUX;
+         break;
+      default:
+         break;
+   }
+   lcd_tim_base = tim;               /* ﾀｲﾏ設定   Thiet lap timer */
+}
+/****************************************************************
+      関数名：Lcd_10ms_cnt
+      引  数：無し
+      戻り値：無し
+      機  能：10ms割込み処理
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_10ms_cnt(void)
+{
+/* 表示編集ﾀｲﾏ */
+   if(lcd_edit_tim > TIMER_OUT)
+   {
+      lcd_edit_tim--;
+   }
+   if(lcd_base_wait_tim > TIMER_OUT)
+   {
+      lcd_base_wait_tim--;
+      if(lcd_base_wait_tim == TIMER_OUT)
+      {
+         Lcd_disp_baseset(Ma_current_mode(),CLCD_BASE_5s);   /* 5sﾍﾞｰｽ表示要求 */
+      }
+   }
+}
+
+/********************************************************************
+         関数名：Lcd_blktim_set
+         引  数：無し
+         戻り値：無し
+         機  能：調整動作中点滅させないように
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/07/31      0.1      ha      新規作成
+****************************************************************/
+void Lcd_blktim_set(void)
+{
+   #if 0
+   flcd_blk_clr = ON;                  /* 点滅しない要求 */
+   #else
+   lcd_tim_blk = CLCD_TIMECNT_1S;
+   #endif
+}
+
+/********************************************************************
+         関数名：Lcd_send_req
+         引  数：無し
+         戻り値：無し
+         機  能：送信要求設定
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/08/20      0.1      ha      新規作成
+****************************************************************/
+void Lcd_send_req(void)
+{
+   #if 0
+   flcd_send = ON;                  /* 点滅しない要求 */
+   #else
+   lcd_edit_tim = 0;
+   #endif
+}
+
+#if 1
+void Lcd_accoff_send_req(void) // duoc goi dau tien trong file pw_main.c, trong h瀘 Pw_initial
+                               // file excel giai thich: h瀘 n炸 dg de yeu cau cap nhat hien thi trong khi ACCOFF
+{
+   flcd_accoff_send = ON;  // duoc su dung trong file lcd_main.
+}
+
+BOOL Lcd_accoff_send_end(void)
+{
+   return (flcd_accoff_send);
+}
+
+#endif
+/********************************************************************
+         関数名：Lcd_allseg_req
+         引  数：onoff
+               0x00：   テストモード以外
+               0x01：   全点灯
+               0x02：   全消灯
+         戻り値：無し
+         機  能：全点消灯処理
+----------------------------------------------------------------
+修正履歴   【年月日】【Version】【名前】 【説明】
+----------------------------------------------------------------
+         2012/08/20      0.1      ha      新規作成
+****************************************************************/
+void Lcd_testmode_func(BYTE RcvCmd,BYTE *RcvBuf,BYTE Length)
+{
+   flcd_test_mode = ON;
+   if ( Length<= 4)
+   {
+      memcpy(lcd_test_buf,RcvBuf,Length);
+   }
+}
+
+#undef   _LCD_EXT_C_

@@ -1,0 +1,773 @@
+#include "io.h"
+#define  E_SIG  0x20       
+#define  RS_SIG 0x10 
+#include  <3048.h>
+char  s1,s2,m1,m2,h1,h2;            // variables for Display and Display2 routine
+char  d1,d2,mo1,mo2,y2,y3,y4,y5;    //   
+int choice;                         // choice is used in TMR3 overflow interrupt function
+int st,mit,ht,dt,mot,yt;            // variables for Set Mode
+int a, max;
+int day=1,mon=1,year=2000;          // main variables contain values of real time
+int sec=-1,min=0,hour=0;
+int overflow_times,disp_flag = 0,blink_section=0, blink_line = 0;   // overflow_times for Timer0 to create 1 second, blink_section for Blink_Display, blink_line is used for Display2 when first time in Set Mode
+int f = 0;                  // f is a flag to choose Blink_Display or Display2 in TMR1 interrupt function.                                 
+int display_option, section_option; // display_option = 0 -> section_option = 0,1,2 (day,month,year) or display_option = 1 -> section_option = 0,1,2 (second.minute,hour)
+int max_day, max_day2;              // depending on months of year we have different max_day. max_day2 is used in Set Mode, max_day2 will be updated when 
+                                    // we change year or month section.   
+int x;                              // x is used in Up/Down and Display3 function
+int cnt_time_delay=0;               // cnt_time_delay is used in TMR0 interrupt overflow function 
+int cnt_hold_delay=0;               // cnt_hold_delay is used in TMR0 interrupt overflow function to count time hold button 
+int en_cnt_time_delay = 0, en_cnt_hold_delay = 0;   // en_cnt_time_delay is used to enable cnt_time_delay,en_cnt_hold_delay is used to enable cnt_hold_delay = 
+int blink_flag, flag_100ms =0, flag_250ms = 0;                  
+void wait(void){
+    int  t= 1000;
+    while(t--);
+}
+
+
+void lcdo8(unsigned char d)	{
+    d = d | E_SIG;
+    P3DR = d;
+    d = d & 0xdf;
+    P3DR = d;
+    wait();
+}
+
+void lcdini(void)	{
+    lcdo8(3);
+    lcdo8(3);
+    lcdo8(3);
+    lcdo8(2);
+    lcdo8(2);
+    lcdo8(8);
+    lcdo8(0);
+    lcdo8(0x0c);
+    lcdo8(0);
+    lcdo8(6);
+}
+
+void lcdclr(void){                                  // clear all characters
+    P3DR = 0;
+    lcdo8(0);
+    lcdo8(1);
+    wait();
+}
+
+void lcdxy(unsigned char y,unsigned char x){        // choose row and column of lcd. EX: row 1, column 3 => lcdxy(0x08,3)
+    P3DR = 0;
+    lcdo8(y);
+    lcdo8(x);
+    wait();
+}
+
+void lcdo4(unsigned char d){                        // display character 
+    unsigned dd;
+    dd = d;
+    d = d >> 4;
+    d = d & 0x0f;
+    d = d | RS_SIG;
+    lcdo8(d);
+    wait();
+    dd = dd & 0x0f;
+    dd = dd | RS_SIG;
+    lcdo8(dd);
+    wait();
+}
+
+
+
+void dsp1g(char *str){                  // display a string on LCD
+    int c = 16;                 
+    for(c = 0;c < 16;c++){     
+      lcdo4(*str);                
+      str++;                      
+    }
+}
+
+
+void Blink_Display()                // is used to blink every 500ms when in Set Mode at second time
+{   
+    s1=st%10 +48;
+    s2=st/10 +48;
+    m1=mit%10 +48;
+    m2=mit/10 +48;
+    h1=ht%10 +48;
+    h2=ht/10 +48;
+    y5=yt/1000 +48;
+    y4=(yt/100)%10 +48;
+    y3=(yt%100)/10 +48;
+    y2=yt%10 +48;
+    mo1=mot%10 +48;
+    mo2=mot/10 +48;
+    d1=dt%10 +48;
+    d2=dt/10 +48;
+    wait();
+     if(blink_section == 1)
+     {  
+       if(display_option == 1)
+       {
+        if(section_option == 0 )
+         {
+           lcdxy(0x0c,8);          
+           lcdo4(' ');
+           lcdxy(0x0c,7);          
+           lcdo4(' ');    
+         }
+        else if(section_option == 1)
+         {
+           lcdxy(0x0c,5);          
+           lcdo4(' ');
+           lcdxy(0x0c,4);          
+           lcdo4(' ');
+
+         }
+        else if(section_option == 2)
+        { 
+           lcdxy(0x0c,2);          
+           lcdo4(' ');
+     	     lcdxy(0x0c,1);          
+           lcdo4(' ');
+    
+        }
+       }
+       else if(display_option == 0)
+       {
+        if(section_option == 2)
+        {
+      
+              lcdxy(0x0c,1);          
+              lcdo4(' ');
+              lcdxy(0x0c,2);          
+              lcdo4(' ');
+              lcdxy(0x0c,3);          
+              lcdo4(' ');
+   	          lcdxy(0x0c,4);         
+              lcdo4(' ');
+ 
+        }
+        else if(section_option == 1)
+             {
+              lcdxy(0x0c,6);          
+              lcdo4(' ');
+   	          lcdxy(0x0c,7);         
+              lcdo4(' ');
+ 
+             }
+        else if(section_option == 0)
+            {
+              lcdxy(0x0c,9);         
+              lcdo4(' ');
+              lcdxy(0x0c,10);          
+              lcdo4(' ');
+            }
+      }
+       
+      }
+      else if(blink_section == 0)
+      {
+       if(display_option == 1)
+       {
+        if(section_option == 0 )
+         {
+           lcdxy(0x0c,8);          
+           lcdo4(s1);
+           lcdxy(0x0c,7);          
+           lcdo4(s2);    
+         }
+        else if(section_option == 1)
+         {
+           lcdxy(0x0c,5);          
+           lcdo4(m1);
+           lcdxy(0x0c,4);          
+           lcdo4(m2);
+
+         }
+        else if(section_option == 2)
+        { 
+           lcdxy(0x0c,2);          
+           lcdo4(h1);
+     	     lcdxy(0x0c,1);          
+           lcdo4(h2);
+    
+        }
+       }
+       else if(display_option == 0)
+       {
+        if(section_option == 2)
+        {
+      
+              lcdxy(0x0c,1);          
+              lcdo4(y5);
+              lcdxy(0x0c,2);          
+              lcdo4(y4);
+              lcdxy(0x0c,3);          
+              lcdo4(y3);
+   	          lcdxy(0x0c,4);         
+              lcdo4(y2);
+ 
+        }
+        else if(section_option == 1)
+             {
+              lcdxy(0x0c,6);          
+              lcdo4(mo2);
+   	          lcdxy(0x0c,7);         
+              lcdo4(mo1);
+ 
+             }
+        else if(section_option == 0)
+            {
+              lcdxy(0x0c,9);         
+              lcdo4(d2);
+              lcdxy(0x0c,10);          
+              lcdo4(d1);
+            }
+      }
+       
+      }
+     
+}
+
+void Display2(void){                                    // Blinking Display when first time go into Set Mode. All characters in LCD in line 2 will blink  
+
+
+   if(blink_line == 0)
+   {
+    if(display_option == 0){
+      wait();
+      lcdxy(0x0c,10); lcdo4(d1);
+   	  lcdxy(0x0c,9);  lcdo4(d2);
+     	lcdxy(0x0c,8);  lcdo4('/');
+   	  lcdxy(0x0c,7);  lcdo4(mo1);
+     	lcdxy(0x0c,6);  lcdo4(mo2);
+      lcdxy(0x0c,5);  lcdo4('/');
+     	lcdxy(0x0c,4);  lcdo4(y2);
+     	lcdxy(0x0c,3);  lcdo4(y3);
+   	  lcdxy(0x0c,2);  lcdo4(y4);
+      lcdxy(0x0c,1);  lcdo4(y5);
+    }
+    else  if(display_option == 1){
+      wait();
+      lcdxy(0x0c,10); lcdo4(' ');
+     	lcdxy(0x0c,9);  lcdo4(' ');
+      lcdxy(0x0c,8);  lcdo4(s1);
+   	  lcdxy(0x0c,7);  lcdo4(s2);
+     	lcdxy(0x0c,6);  lcdo4(':');
+    	lcdxy(0x0c,5);  lcdo4(m1);
+   	  lcdxy(0x0c,4);  lcdo4(m2);
+     	lcdxy(0x0c,3);  lcdo4(':');
+     	lcdxy(0x0c,2);  lcdo4(h1);
+    	lcdxy(0x0c,1);  lcdo4(h2);
+    }
+    }
+    else 
+    {
+     ; lcdxy(0x0c,1);
+       dsp1g("                ");
+     
+    }
+}
+
+
+void Display(void){                                     // Display normally
+    s1=sec%10 +48;
+    s2=sec/10 +48;
+    m1=min%10 +48;
+    m2=min/10 +48;
+    h1=hour%10 +48;
+    h2=hour/10 +48;
+    y5=year/1000 +48;
+    y4=(year/100)%10 +48;
+    y3=(year%100)/10 +48;
+    y2=year%10 +48;
+    mo1=mon%10 +48;
+    mo2=mon/10 +48;
+    d1=day%10 +48;
+    d2=day/10 +48;
+
+    if(display_option == 0){
+      wait();
+      lcdxy(0x0c,10); lcdo4(d1);
+   	  lcdxy(0x0c,9);  lcdo4(d2);
+     	lcdxy(0x0c,8);  lcdo4('/');
+   	  lcdxy(0x0c,7);  lcdo4(mo1);
+     	lcdxy(0x0c,6);  lcdo4(mo2);
+      lcdxy(0x0c,5);  lcdo4('/');
+     	lcdxy(0x0c,4);  lcdo4(y2);
+     	lcdxy(0x0c,3);  lcdo4(y3);
+   	  lcdxy(0x0c,2);  lcdo4(y4);
+      lcdxy(0x0c,1);  lcdo4(y5);
+    }
+    else  if(display_option == 1){
+      wait();
+      lcdxy(0x0c,10); lcdo4(' ');
+    	lcdxy(0x0c,9);  lcdo4(' ');
+      lcdxy(0x0c,8);  lcdo4(s1);
+   	  lcdxy(0x0c,7);  lcdo4(s2);
+     	lcdxy(0x0c,6);  lcdo4(':');
+    	lcdxy(0x0c,5);  lcdo4(m1);
+   	  lcdxy(0x0c,4);  lcdo4(m2);
+     	lcdxy(0x0c,3);  lcdo4(':');
+     	lcdxy(0x0c,2);  lcdo4(h1);
+    	lcdxy(0x0c,1);  lcdo4(h2);
+    }
+    
+
+}
+
+
+void int_imia0 (void)                   // Timer0 is used to create 1 second
+{
+	  ITU0.TSR.BIT.IMFA = 0;              // clear Timer interrupt flag
+    overflow_times-=1;                               // c decrease by 1 when interrupt occurs
+    if(en_cnt_time_delay == 1) 
+    {
+     cnt_time_delay++;
+     if(blink_flag == 1) 
+     {
+      if(cnt_time_delay == 50) { flag_250ms = 1;cnt_time_delay = 0;}
+     }
+     else if(blink_flag == 0)
+     {
+      if(cnt_time_delay == 20) {flag_100ms = 1; cnt_time_delay = 0;}
+     }    
+    }
+    if(en_cnt_hold_delay  == 1) cnt_hold_delay++;
+    if(overflow_times==0){                           
+  	  sec++;
+	    if(sec==60){
+		    sec=0;
+		    min++;
+	    }
+    if(min==60){
+       min=0;
+       hour++;
+    }
+    if(hour==24){
+       hour=0;
+       day++;
+      
+    }
+    if(year%400==0 || (year%4==0 && year%100!=0)){                                                // check if leaf year or not
+      switch (mon){
+        case 2: max_day = 29; break;                                                               
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12: max_day = 31; break;
+        case 4: case 6: case 9: case 11:  max_day = 30; break;
+      }
+    }
+    else if(year%4 != 0 || (year%4==0 && year%100==0) || year%400!=0){
+      switch (mon){
+        case 2: max_day = 28; break;
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12: max_day = 31; break;
+        case 4: case 6: case 9: case 11:  max_day = 30; break;
+      }
+    }
+    if(day>max_day){
+      day=1;  
+      mon++;
+    }
+    if(mon==13){
+      mon=1;
+      year++;
+    }
+    if(year==10000)
+      year = 1;
+   
+   overflow_times = 200; disp_flag = 1;                           //  when run all 1s, c is set to 200 again  
+  }
+}
+
+
+void Display3()                       // This function is used to display the changed value in every 100ms when hold button Up/Down >= 500ms
+{                                          
+   switch(a)
+   {
+    case 6:  
+    {         
+      y2=x%10 +48;   
+      if(y5 != x/1000 +48)          // We just display the changed number, the unchanged number will not be displayed again to avoid wasting the displayed time uselessly.
+      {                             // EX: 2001 -> 2002. the number y2 is changed from 1->2, then we will display it. Since 200(y5y4y3) is not changed, we will not display it again.
+        y5 = x/1000 +48;            // EX: 2009 -> 2010. y2 and y3 are changed,we will display those values again. 
+        lcdxy(0x0c,1);          
+        lcdo4(y5);
+     
+      }
+      if(y4 != (x/100)%10 +48)
+      {
+        y4 = (x/100)%10 +48;
+        lcdxy(0x0c,2);          
+        lcdo4(y4);     
+      }
+      if(y3 != (x%100)/10 +48)
+      {
+        y3=(x%100)/10 +48;
+        lcdxy(0x0c,3);         
+        lcdo4(y3);
+      }
+   	  lcdxy(0x0c,4);         
+      lcdo4(y2);
+      break;
+    }
+    case 5:                         // As explained above.
+    {
+      mo1=x%10 +48;
+      lcdxy(0x0c,7);         
+      lcdo4(mo1);
+      if(mo2 != x/10 +48) 
+      {
+        mo2 = x/10 +48;
+   	    lcdxy(0x0c,6);          
+        lcdo4(mo2); 
+      }
+      break;
+    }
+   
+   case 4:                           // As explained above.
+   {
+     d1=x%10 +48;
+     lcdxy(0x0c,10);         
+     lcdo4(d1);
+     if(d2 != x/10 +48)
+     {
+      d2=x/10 +48;
+      lcdxy(0x0c,9);          
+      lcdo4(d2); 
+     }
+     break;
+   }
+   case 3:                         // As explained above.
+   {
+     h1=x%10 +48;
+     lcdxy(0x0c,2);          
+     lcdo4(h1);
+     if(h2 != x/10 +48)
+     {
+      h2=x/10 +48;
+      lcdxy(0x0c,1);          
+      lcdo4(h2);
+     }
+     break;
+   }
+   case 2:                           // As explained above.
+   {
+     m1=x%10 +48;
+     lcdxy(0x0c,5);         
+     lcdo4(m1);
+     if(m2 != x/10 +48)
+     {
+      m2=x/10 +48;
+      lcdxy(0x0c,4);          
+      lcdo4(m2); ;
+     }   
+     break;
+   }
+   case 1:                           // As explained above.
+   {
+    s1=x%10 +48;
+    lcdxy(0x0c,8);          
+    lcdo4(s1);
+    if(s2 != x/10 +48)
+     {
+      s2=x/10 +48;
+      lcdxy(0x0c,7);          
+      lcdo4(s2);
+     }  
+     break;
+   }
+   
+}
+}
+
+void Inc_Dec()
+{
+      if(flag_100ms == 1)                   // cnt_time_delay is increased automatically in TMR0.
+      {
+        flag_100ms = 0;
+        if(choice == 0){                         // choice = 0 when press and hold button UP. x will be increased
+          x++;    
+          if(x==max && display_option == 1) x=0;         // flag1 = 1 ->choose Clock section -> x can be zero 
+          else if (x>=max+1 && display_option == 0) x=1;  // flag1 = 0 ->choose Calendar section -> x can not be zero 
+          }
+        else if(choice == 1)                     // choice = 1 when press and hold button DOWN. x will be decreased
+        {
+          x--;     
+          if(x<0 && display_option == 1) x=max-1;         
+          else if (x<1 && display_option == 0) x=max;          
+        }           
+       Display3(); 
+      }
+}
+
+
+void Up(){                  // depending on which section we want to increase we have different max and x.See more in main function
+     switch(a){
+            case 1: x = st; break;
+            case 2: x = mit; break;
+            case 3: x = ht; break;
+            case 4: x = dt; break;
+            case 5: x = mot; break;
+            case 6: x = yt; break;
+          }   
+    choice = 0;                            
+    while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 0){                                     
+        if(cnt_hold_delay>=100){                                // if button B7 is pressed and hold longer than 500ms then x will increases in every 100ms   
+          cnt_time_delay = 0; blink_flag = 0;                              // enable cnt_time_delay to increase when TMR0 interrupts.
+          while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 0) 
+          { Inc_Dec(); }         
+       }
+    }
+    en_cnt_hold_delay = 0;
+    if(cnt_hold_delay>5&& cnt_hold_delay<100) {                             // if button B7 isn't hold, x will be increased by 1.
+        x++;
+        if(x==max && display_option == 1) x=0;
+        else if (x==max+1 && display_option == 0) x=1;
+     }
+    cnt_hold_delay = 0;                                                  // cnt_hold_delay = 0 for the next operation
+    switch(a){
+      case 1: st=x; break;
+      case 2: mit=x; break;
+      case 3: ht=x; break;
+      case 4: dt=x; break;
+      case 5: mot=x; break;
+      case 6: yt=x; break;
+    }
+     cnt_time_delay  = 0;                                               // cnt_time_delay  = 0 for Blink function in Set Mode of main function  
+	 blink_flag = 1;
+}
+
+void Down(){                 // depending on which section we want to decrease we have different max and x.See more in main function
+     switch(a){
+            case 1: x = st; break;
+            case 2: x = mit; break;
+            case 3: x = ht; break;
+            case 4: x = dt; break;
+            case 5: x = mot; break;
+            case 6: x = yt; break;
+          };        
+    choice = 1;
+    while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==0 && P4.DR.BIT.B7 == 1){                                     
+        if(cnt_hold_delay>=100){  
+          cnt_time_delay = 0; blink_flag = 0;       
+          while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==0 && P4.DR.BIT.B7 == 1)
+          { Inc_Dec();}                                                        
+         }
+       }
+    if(cnt_hold_delay>5 && cnt_hold_delay<100){                             // if button B6 isn't hold, x will be decreased by 1.
+        x--;
+        if(x<0 && display_option == 1) x=max-1;
+        else if (x<1 && display_option == 0) x=max;
+    }
+    cnt_hold_delay = 0;                                        // cnt_hold_delay = 0 for the next operation
+    switch(a){
+      case 1: st=x; break;
+      case 2: mit=x; break;
+      case 3: ht=x; break;
+      case 4: dt=x; break;
+      case 5: mot=x; break;
+      case 6: yt=x; break;
+   } 
+   cnt_time_delay  = 0;                                  // cnt_time_delay  = 0 for Blink function in Set Mode of main function   
+   blink_flag = 1;
+}
+
+void Blink()                                  // used to create 250ms to blink in Set Mode 
+{
+
+      if(flag_250ms == 1) 
+      { 
+         flag_250ms = 0;
+         if(f == 0)                          // f = 0 means we in Set Mode at the first time.
+               {
+                   blink_line = !blink_line;
+                   Display2();                          
+               }
+         else                                // f = 1 means we in Set Mode at the second time.
+               {
+                   blink_section = !blink_section;
+                   Blink_Display(); 
+               }      
+      
+      }     
+}
+int main(void){
+   	P4DDR = 0;                 // set port P4 PULL-UP input       
+    P4PCR = 0xff;              // 
+    P3DDR = 0xff;              // set port P3 output for LCD
+    wait();                   
+    lcdini();                  // initialize LCD
+    wait();
+    lcdclr();                  // clear all character on LCD        
+   	ITU0.TCR.BIT.CCLR    = 1;  // Timer0 counteris cleared by GRA compare match or input capture
+    ITU0.TCR.BIT.TPSC    = 3;  // set prescaler = 8
+    ITU0.GRA        =10000;    // set value for output compared register. The value interval = 39999 means Timer counter will increases from 25535 to 65535.
+    ITU0.TIER.BIT.IMIEA = 1;     
+    ITU.TSTR.BIT.STR0 = 1;     // enable Timer0
+    INTC.IPRA.BYTE = 0x04;     // Set the priority of TMR0 interrupt is HIGH.    
+
+    overflow_times=200;           
+    EI;                
+    int tem = 1;               // to create delay 10ms
+    display_option = 1;  section_option = 2;    // flag1 = 1 choose Clock section, flag2 = 2 choose hour section when flag1 = 1   
+    lcdxy(0x08,1);
+    dsp1g("VER:1.0 GROUP 2  ");
+    while(1){
+      en_cnt_time_delay  = 1;                                          //
+      while(tem--) {while(cnt_time_delay ==1) cnt_time_delay  = 0;}    // delay 10ms. It's convenient for pressing many button at the same time.
+      en_cnt_time_delay  = 0; tem =1;                                 //
+    
+      if(disp_flag==1)                                                       // check if Display or not. It only display when the value of real time change. EX: 00:00:01 -> 00:00:02. 
+        { Display(); disp_flag=0;}  
+               
+      if(P4.DR.BIT.B4 == 0 && P4.DR.BIT.B5 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 1){     // button B4 change the section (Clock/Calendar) we want to display
+        en_cnt_hold_delay  = 1; cnt_hold_delay = 0;                                            
+        while(P4.DR.BIT.B4 == 0)
+        {
+          if( P4.DR.BIT.B5 == 0 || P4.DR.BIT.B6 ==0 || P4.DR.BIT.B7 == 0)
+          {
+            cnt_hold_delay = 0;
+          }
+          if(disp_flag==1) { Display();disp_flag=0;}                                                    // when hold B4, because en_cnt_hold_delay  = 1, when TMR0 overflows, cnt_hold_delay = cnt_hold_delay+1; 
+                                                                                      // During holding B4, if value of real time changes(overflow_times=0 in TMR0, overflow_times will be 200 again),Display new value of real time 
+        }
+        en_cnt_hold_delay  = 0;
+        if(cnt_hold_delay>5){                                // cnt_hold_delay>5 when hold button longer than 25ms and <= 100 when hold less than 500ms 
+          if(display_option == 0) { display_option = 1; Display();}                                // If initially Calendar Display, then it will be Clock Display                     
+          else if(display_option == 1) { display_option = 0; Display();}                            // If initially Clock Display, then it will be Calendar Display 
+        }
+		cnt_hold_delay = 0;
+      }
+   	
+      
+      
+      else if(P4.DR.BIT.B5 == 0 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 1)     //go into Set Mode at the first time
+      {
+        en_cnt_hold_delay = 1; cnt_hold_delay = 0;
+        while(P4.DR.BIT.B5 == 0)
+        {
+         if(P4.DR.BIT.B4 == 0 || P4.DR.BIT.B6 == 0 || P4.DR.BIT.B7 == 0)cnt_hold_delay = 0;
+         if(disp_flag==1) { Display();disp_flag=0;}         // when hold B5, because en_cnt_hold_delay  = 1, when TMR0 overflows, cnt_hold_delay = cnt_hold_delay+1; 
+                                                            // During holding B5, if value of real time changes(overflow_times=0 in TMR0, overflow_times will be 200 again),Display new value of real time 
+          
+        }
+        en_cnt_hold_delay = 0;
+      if(cnt_hold_delay>5)
+       {                                    // cnt_hold_delay>5 when hold button longer than 25ms and <= 400 when hold less than 2s    
+        st = sec; mit = min;ht = hour; dt = day; mot = mon; yt = year; max_day2 = max_day;  // when in Set Mode, all current time will be saved in variables st,mit,ht,dt,mot,yt
+        en_cnt_time_delay = 1;       // enable cnt_time_delay in TMR0 and used for Blink function.
+        blink_flag = 1;                      
+		blink_line = 0; Display2();                 
+                 int   h = 1;f = 1;
+                 tem = 2;     cnt_time_delay = 0;                  
+                 while(tem--) {while(cnt_time_delay==1) cnt_time_delay = 0;}  //  create delay 10ms when go into Set Mode at the second time. 
+                                                                              // avoding the case that fast transition from Set Mode at the first time to Set Mode at the second time
+                 tem = 2;                                                     //
+                 while(h == 1) 
+                 {                      // h = 1 to make the infinite loop.
+                          
+                     Blink();
+                     if(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 0){
+                       en_cnt_hold_delay  = 1; cnt_hold_delay = 0;
+                       while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==1 && P4.DR.BIT.B7 == 0){
+                       Blink();
+                       if(cnt_hold_delay>5)
+                         {
+                          
+                           blink_line = 0;
+                           Display2();
+                           if(display_option == 1) {
+                              if(section_option == 0)       { max = 60; a = 1; Up();}   
+                              else if(section_option == 1)  { max = 60; a = 2; Up();}  
+                              else                          { max = 24; a = 3; Up();}
+                             }
+                           else {
+                              if(section_option == 0)       { max = max_day2; a = 4; Up(); }
+                              else if(section_option == 1)  { max = 12;       a = 5; Up(); }
+                              else                          { max = 9999;     a = 6; Up(); }                           
+                             }   
+                         } 
+                        }
+                       
+                      }
+                    
+                    
+                     else if(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==0 && P4.DR.BIT.B7 == 1){
+                       en_cnt_hold_delay = 1; cnt_hold_delay = 0;
+                       while(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 ==0 && P4.DR.BIT.B7 == 1){
+                       Blink();
+                       if(cnt_hold_delay>5)
+                         {
+                         
+                           blink_line = 0;
+                           Display2();
+                           if(display_option == 1) {
+                              if(section_option == 0)       { max = 60; a = 1; Down();}   
+                              else if(section_option == 1)  { max = 60; a = 2; Down();}  
+                              else                          { max = 24; a = 3; Down();}
+                             }
+                           else {
+                              if(section_option == 0)       { max = max_day2; a = 4; Down(); }
+                              else if(section_option == 1)  { max = 12;       a = 5; Down(); }
+                              else                          { max = 9999;     a = 6; Down(); }                           
+                             }   
+                         } 
+                        }
+                   
+                      } 
+                      
+                     
+                    else if(P4.DR.BIT.B5 == 0 && P4.DR.BIT.B4 == 1 && P4.DR.BIT.B6 == 1 && P4.DR.BIT.B7 == 1){  // Change the next section when press button Set Mode
+                       en_cnt_hold_delay = 1; cnt_hold_delay = 0;
+                       while(P4.DR.BIT.B5 == 0)
+                       {   Blink(); 
+					       if(P4.DR.BIT.B4 == 0 || P4.DR.BIT.B6 == 0 || P4.DR.BIT.B7 == 0)    cnt_hold_delay = 0;
+					   }
+                       en_cnt_hold_delay = 0;
+                       if(cnt_hold_delay>5){                     // 25ms < hold button <= 2s  , the button will work 
+                           blink_section = 0;  Blink_Display();
+                           section_option--;                //decrease flag2 to change next section in Clock/Calendar Mode. EX: flag2 = 2: year section -> flag2 = 1: month section
+                           if(section_option==-1){                    // after 3 times press button Set Mode, the forth time will out the Set Mode and accept the new change
+                              h = 0;h1 =0; 
+                              if(display_option == 1)        {  sec=st; min=mit;hour=ht;}    //set the new values in real time
+                              else if(display_option == 0)   { day=dt; mon=mot; year=yt;}                     
+                              section_option = 2;     
+                              en_cnt_time_delay  = 0; cnt_time_delay = 0; 
+                           }            
+                           if(yt%400==0 || (yt%4==0 && yt%100!=0))              // check if leaf year or not
+                            {                                                
+                              switch (mot){                                       // depending on month we change, we have different max day in Set Mode.
+                                                                               // we use max_day2 not max_day because when we change year/month in Set Mode, the max_day will not be changed 
+                                case 2: max_day2 = 29; break;                                                               
+                                case 1: case 3: case 5: case 7: case 8: case 10: case 12: max_day2 = 31; break;
+                                case 4: case 6: case 9: case 11:  max_day2 = 30; break;
+                              }
+                            }
+                           else if(yt%4 != 0 || (yt%4==0 && yt%100==0) || yt%400!=0){
+                              switch (mot){
+                                 case 2: max_day2 = 28; break;
+                                 case 1: case 3: case 5: case 7: case 8: case 10: case 12: max_day2 = 31; break;
+                                 case 4: case 6: case 9: case 11:  max_day2 = 30; break;
+                            }            
+                          }         
+                            if(dt>max_day2)  {   dt=1;  }              // depending on month and year, when we change the day in Set Mode, if the day > max day it will turn to 1.
+                       }
+                       cnt_hold_delay = 0;                       
+		                }  
+                   else if(P4.DR.BIT.B5 == 1 && P4.DR.BIT.B4 == 0 && P4.DR.BIT.B6 ==1  && P4.DR.BIT.B7 == 1){   // press button B4 to cancel what we change
+                      en_cnt_hold_delay = 1; cnt_hold_delay = 0;
+                      while(P4.DR.BIT.B4 == 0)  
+                        {
+                          if(P4.DR.BIT.B5 == 0 || P4.DR.BIT.B6 ==0  || P4.DR.BIT.B7 == 0 )cnt_hold_delay=0;
+                          Blink();
+                                         
+                        }
+                         if(cnt_hold_delay>5)                        // hold button <=25ms , the button will not work  
+                          { en_cnt_time_delay = 0; cnt_time_delay = 0; h = 0; section_option = 2; }    
+                      en_cnt_hold_delay = 0; cnt_hold_delay=0; 
+                    }
+                }
+              }      
+	    	  
+	  } 
+	  }	  
+}
+
+

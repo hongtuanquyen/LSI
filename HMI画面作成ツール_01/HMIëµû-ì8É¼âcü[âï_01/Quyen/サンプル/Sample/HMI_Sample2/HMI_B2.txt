@@ -1,0 +1,542 @@
+Language:	English
+Type_display
+ID_No:	1
+Height:	480
+Width:	640
+
+
+Type_button
+ID_No:	1
+Position:	4
+Height:	45
+Width:	125
+X_axis:	208
+Y_axis:	423
+Size_text:	18
+Text_jpn:	"CRUISE"
+Text_eng:	"CRUISE"
+Is_toggle:	0
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\02_dmt.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	2
+Position:	5
+Height:	45
+Width:	80
+X_axis:	349
+Y_axis:	423
+Size_text:	18
+Text_jpn:	"SET"
+Text_eng:	"SET"
+Is_toggle:	0
+Image_off:	"Image\02_dmt.bmp"
+Image_press:"Image\02_dmt.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	3
+Position:	6
+Height:	53
+Width:	79
+X_axis:	24
+Y_axis:	418
+Size_text:	18
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HIM_H5.bmp"
+Image_press:"Image\HIM_H5.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	4
+Position:	7
+Height:	55
+Width:	79
+X_axis:	112
+Y_axis:	418
+Size_text:	18
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HIM_H6.bmp"
+Image_press:"Image\HIM_H6.bmp"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	5
+Position:	8
+Height:	56
+Width:	52
+X_axis:	26
+Y_axis:	7
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HMI_H7.bmp"
+Image_press:"Image\HMI_H7.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	6
+Position:	13
+Height:	60
+Width:	60
+X_axis:	49
+Y_axis:	213
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HMI_H1.png"
+Image_press:"Image\HMI_H1.png"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	7
+Position:	14
+Height:	60
+Width:	60
+X_axis:	50
+Y_axis:	302
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HIM_H3.bmp"
+Image_press:"Image\HIM_H3.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	8
+Position:	15
+Height:	60
+Width:	60
+X_axis:	357
+Y_axis:	213
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HIM_H2.bmp"
+Image_press:"Image\HIM_H2.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_button
+ID_No:	9
+Position:	16
+Height:	60
+Width:	60
+X_axis:	359
+Y_axis:	308
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_toggle:	0
+Image_off:	"Image\HIM_H4.bmp"
+Image_press:"Image\HIM_H4.bmp"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Text_color_on_R:	0
+Text_color_on_G:	0
+Text_color_on_B:	0
+Text_color_press_R:	255
+Text_color_press_G:	255
+Text_color_press_B:	255
+
+
+Type_text
+ID_No:	1
+Position:	1
+Height:	480
+Width:	640
+X_axis:	0
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	2
+Position:	2
+Height:	70
+Width:	640
+X_axis:	0
+Y_axis:	0
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	3
+Position:	3
+Height:	70
+Width:	640
+X_axis:	0
+Y_axis:	410
+Size_text:	12
+Text_jpn:	""
+Text_eng:	""
+Is_label:	0
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	0
+Text_color_off_B:	0
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	4
+Position:	9
+Height:	45
+Width:	88
+X_axis:	80
+Y_axis:	16
+Size_text:	28
+Text_jpn:	"250"
+Text_eng:	"250"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	5
+Position:	10
+Height:	32
+Width:	52
+X_axis:	158
+Y_axis:	23
+Size_text:	20
+Text_jpn:	"km"
+Text_eng:	"km"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	6
+Position:	11
+Height:	45
+Width:	88
+X_axis:	519
+Y_axis:	13
+Size_text:	28
+Text_jpn:	"23"
+Text_eng:	"23"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	7
+Position:	12
+Height:	39
+Width:	47
+X_axis:	583
+Y_axis:	19
+Size_text:	20
+Text_jpn:	"ºC"
+Text_eng:	"ºC"
+Is_label:	1
+Align_text:	"MiddleCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	8
+Position:	17
+Height:	55
+Width:	313
+X_axis:	4
+Y_axis:	138
+Size_text:	28
+Text_jpn:	"平均燃費/車速"
+Text_eng:	"平均燃費/車速"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	0
+Text_color_off_G:	128
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	9
+Position:	18
+Height:	55
+Width:	293
+X_axis:	326
+Y_axis:	138
+Size_text:	28
+Text_jpn:	"走行距離/時間"
+Text_eng:	"走行距離/時間"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	10
+Position:	19
+Height:	45
+Width:	88
+X_axis:	131
+Y_axis:	221
+Size_text:	28
+Text_jpn:	"0.0"
+Text_eng:	"0.0"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	11
+Position:	20
+Height:	45
+Width:	88
+X_axis:	132
+Y_axis:	308
+Size_text:	28
+Text_jpn:	"51"
+Text_eng:	"51"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	12
+Position:	21
+Height:	45
+Width:	88
+X_axis:	499
+Y_axis:	220
+Size_text:	28
+Text_jpn:	"3.0"
+Text_eng:	"3.0"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	13
+Position:	22
+Height:	47
+Width:	125
+X_axis:	423
+Y_axis:	316
+Size_text:	28
+Text_jpn:	"38:37"
+Text_eng:	"38:37"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	14
+Position:	23
+Height:	32
+Width:	67
+X_axis:	199
+Y_axis:	231
+Size_text:	20
+Text_jpn:	"km/l"
+Text_eng:	"km/l"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	15
+Position:	24
+Height:	32
+Width:	81
+X_axis:	198
+Y_axis:	316
+Size_text:	20
+Text_jpn:	"km/h"
+Text_eng:	"km/h"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+
+
+Type_text
+ID_No:	16
+Position:	25
+Height:	32
+Width:	52
+X_axis:	573
+Y_axis:	227
+Size_text:	20
+Text_jpn:	"km"
+Text_eng:	"km"
+Is_label:	1
+Align_text:	"TopCenter"
+Text_color_off_R:	255
+Text_color_off_G:	255
+Text_color_off_B:	255
+Back_color_R:		0
+Back_color_G:		0
+Back_color_B:		0
+-----------------------------------------------------------------
